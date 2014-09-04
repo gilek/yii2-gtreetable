@@ -1,0 +1,3 @@
+[submodule "GTreeTable"]
+      path = assets
+      url = git@github.com:gilek/GTreeTable.git
