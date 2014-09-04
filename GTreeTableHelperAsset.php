@@ -7,7 +7,7 @@ class GTreeTableHelperAsset extends AssetBundle {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@gilek/gtreetable/widgetAssets';
+    public $sourcePath = '@gilek/gtreetable/assets';
 
     /**
      * @inheritdoc
