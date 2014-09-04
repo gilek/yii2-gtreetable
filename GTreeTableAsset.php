@@ -11,21 +11,6 @@ class GTreeTableAsset extends AssetBundle {
 
     /**
      * @inheritdoc
-     */
-    public $css = [
-        'gtreetable.css'
-    ];    
-
-    /**
-     * @inheritdoc
-     */
-    public $js = [
-        'bootstrap-gtreetable.js',
-        //'bootstrap-gtreetable.min.js'
-    ];
-
-    /**
-     * @inheritdoc
      */    
     public $jsOptions = [
         'position' => \yii\web\View::POS_HEAD
@@ -41,22 +26,21 @@ class GTreeTableAsset extends AssetBundle {
     ];  
     
     public $publishOptions = [
-        'forceCopy' => YII_DEBUG
+        'forceCopy' => YII_ENV_DEV
     ];    
     
     public $language;
-        
-    public $urlHelper = false;
+            
+    public $minSuffix = '.min';
     
     public function registerAssetFiles($view)
     {
+        $this->js[] = 'bootstrap-gtreetable'.(YII_ENV_DEV ? '' : $this->minSuffix).'.js';
+        $this->css[] = 'gtreetable'.(YII_ENV_DEV ? '' : $this->minSuffix).'.css';
+        
         if ($this->language !== null) {
             $this->js[] = 'languages/bootstrap-gtreetable.'.$this->language.'.js';
         }
-        
-        if ($this->urlHelper === true) {
-            $this->js[] = 'URI.js';
-        } 
 
         parent::registerAssetFiles($view);
     }    
