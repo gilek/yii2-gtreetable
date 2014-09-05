@@ -35,6 +35,7 @@ class GTreeTableAsset extends AssetBundle {
     
     public function registerAssetFiles($view)
     {
+        $this->js[] = 'jquery.browser.js';        
         $this->js[] = 'bootstrap-gtreetable'.(YII_ENV_DEV ? '' : $this->minSuffix).'.js';
         $this->css[] = 'gtreetable'.(YII_ENV_DEV ? '' : $this->minSuffix).'.css';
         

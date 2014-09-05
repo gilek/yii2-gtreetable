@@ -37,8 +37,7 @@ class GTreeTableWidget extends Widget {
     {
         Yii::$app->i18n->translations['gtreetable'] = [
             'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@gilek/gtreetable/messages',
-            'forceTranslation' => true,         
+            'basePath' => '@gilek/gtreetable/messages',      
         ];
     }    
     
