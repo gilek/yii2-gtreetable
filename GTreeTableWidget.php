@@ -6,7 +6,6 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
 use yii\base\Widget;
-use yii\web\AssetBundle;
 
 class GTreeTableWidget extends Widget {
     
@@ -17,8 +16,6 @@ class GTreeTableWidget extends Widget {
     public $selector;   
     
     public $columnName;
-    
-    public $asset;
     
     /**
      * @inheritdoc
@@ -77,9 +74,6 @@ class GTreeTableWidget extends Widget {
     {
         $view = $this->getView();
         
-        $asset = !($this->asset instanceof AssetBundle) ? new GTreeTableAsset() : $this->asset;
-        $asset::register($this->getView());
-
         if (array_key_exists('language', $this->options) && $this->options['language'] !== null) {
             $asset->language = $this->options['language'];
         }
