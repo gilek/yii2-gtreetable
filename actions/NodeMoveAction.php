@@ -18,7 +18,7 @@ use gilek\gtreetable\models\TreeModel;
 class NodeMoveAction extends BaseAction {
         
     public function run($id) {
-        parent::run($id);                
+        parent::run();                
         
         $model = $this->getNodeById($id);
         $model->scenario = 'move';

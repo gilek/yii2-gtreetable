@@ -1,13 +1,11 @@
 <?php
 use gilek\gtreetable\GTreeTableWidget;
-use gilek\gtreetable\GTreeTableAsset;
 use gilek\gtreetable\GTreeTableHelperAsset;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\helpers\ArrayHelper;
 
 GTreeTableHelperAsset::register($this);
-GTreeTableAsset::register($this);
 
 if (isset($title)) {
     $this->title = $title;
@@ -28,7 +26,6 @@ $routes = array_merge([
 ],$routes);
 
 $defaultOptions = [
-    'draggable' => false,
     'source' => new JsExpression("function (id) {  
         return URI('".Url::to([$routes['source']])."').addSearch({'id':id});
     }"),

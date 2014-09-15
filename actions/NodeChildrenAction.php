@@ -16,7 +16,7 @@ use yii\validators\NumberValidator;
 class NodeChildrenAction extends BaseAction {
     
     public function run($id) {
-        parent::run($id);        
+        parent::run();        
         
         $validator = new NumberValidator();
         $validator->integerOnly = true;

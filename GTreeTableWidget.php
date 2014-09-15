@@ -1,4 +1,10 @@
 <?php
+/*
+* @author Maciej "Gilek" Kłak
+* @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
+* @version 1.0b
+* @package Yii2-GTreeTable
+*/
 namespace gilek\gtreetable;
 
 use Yii;
@@ -6,6 +12,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
 use yii\base\Widget;
+use yii\web\AssetBundle;
 
 class GTreeTableWidget extends Widget {
     
@@ -17,26 +24,15 @@ class GTreeTableWidget extends Widget {
     
     public $columnName;
     
+    public $assetBundle;
+    
     /**
      * @inheritdoc
      */
     public function init()
-    {
-        $this->registerTranslations();        
+    {     
         $this->columnName = Yii::t('gtreetable','Name');
-        
     } 
-    
-    /**
-     * Register widget translations.
-     */
-    public function registerTranslations()
-    {
-        Yii::$app->i18n->translations['gtreetable'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@gilek/gtreetable/messages',      
-        ];
-    }    
     
     /**
      * @inheritdoc
@@ -73,11 +69,16 @@ class GTreeTableWidget extends Widget {
     public function registerClientScript()
     {
         $view = $this->getView();
+        $assetBundle = $this->assetBundle instanceof AssetBundle ? $this->assetBundle : GTreeTableAsset::register($view);
         
         if (array_key_exists('language', $this->options) && $this->options['language'] !== null) {
-            $asset->language = $this->options['language'];
+            $assetBundle->language = $this->options['language'];
         }
 
+        if (array_key_exists('draggable', $this->options) && is_bool($this->options['draggable'])) {
+            $assetBundle->draggable = $this->options['draggable'];
+        }        
+        
         $selector = $this->selector===null ? '#'.(array_key_exists('id', $this->htmlOptions) ? $this->htmlOptions['id'] : $this->getId()) : $this->selector;
         $options = Json::encode($this->options);
 

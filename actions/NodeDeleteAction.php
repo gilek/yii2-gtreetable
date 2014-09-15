@@ -13,19 +13,18 @@ use yii\db\Exception;
 use yii\helpers\Html;
 
 class NodeDeleteAction extends BaseAction { 
-    public $depending = array();
+    public $depending = [];
 
     public function run($id) {
-        parent::run($id);       
+        parent::run();       
                 
         $depending = array_keys($this->depending);
-        $model = $this->getNodeById($id,$depending);
+        $model = $this->getNodeById($id, $depending);
             
-        // TODO
-        // informacja ze musi zostac tylko 1 element
-        /*if ($model->{$model->typeAttribute}==$model::TYPE_ROOT) {
+
+        if ($model->isRoot() && (integer)$model->find()->roots()->count() === 1) {
             throw new HttpException(500, Yii::t('gtreetable','Main element can`t be deleted!'));            
-        }*/
+        }
         
         $nodes = $model->descendants()->with($depending)->all();
         $nodes[] = $model;

@@ -15,12 +15,13 @@ class BaseAction extends Action {
     public $treeModelName;
     public $access;
     
-    public function run($params = []) {
+    public function run() {     
         if ($this->access!==null) {
             if (!Yii::$app->user->can($this->access)) {
                 throw new ForbiddenHttpException();  
             }    
-        }         
+        }  
+        
     }
     
     public function getNodeById($id, $with = []) {

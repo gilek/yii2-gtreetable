@@ -1,5 +1,10 @@
 <?php
-
+/*
+* @author Maciej "Gilek" Kłak
+* @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
+* @version 1.0b
+* @package Yii2-GTreeTable
+*/
 namespace gilek\gtreetable\models;
 
 use creocoder\behaviors\NestedSet;
@@ -29,8 +34,6 @@ class TreeModel extends ActiveRecord {
     public $typeAttribute = 'type';
     public $nedsetParams = [];    
     
-    //TODO
-    // pomyśleć jak to zroibic aby nie powtarzac atrybutow
     public $hasManyRoots;
     public $rootAttribute;
     public $leftAttribute;
@@ -111,10 +114,6 @@ class TreeModel extends ActiveRecord {
         }
         return true;
     }
-
-    /*public function getParentNode() {
-        return $this->hasOne(get_class($this), ['id'=>'parent']);
-    }*/
 
     public function getRelatedNode() {
         return $this->hasOne(get_class($this), ['id'=>'related']);

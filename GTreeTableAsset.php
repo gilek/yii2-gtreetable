@@ -30,17 +30,22 @@ class GTreeTableAsset extends AssetBundle {
     ];    
     
     public $language;
+    
+    public $draggable = false;
             
     public $minSuffix = '.min';
     
     public function registerAssetFiles($view)
     {
-        $this->js[] = 'jquery.browser.js';        
+        if ($this->draggable === true) {
+            $this->js[] = 'jquery.browser.js';        
+        }
+        
         $this->js[] = 'bootstrap-gtreetable'.(YII_ENV_DEV ? '' : $this->minSuffix).'.js';
         $this->css[] = 'gtreetable'.(YII_ENV_DEV ? '' : $this->minSuffix).'.css';
         
         if ($this->language !== null) {
-            $this->js[] = 'languages/bootstrap-gtreetable.'.$this->language.'.js';
+            $this->js[] = 'languages/bootstrap-gtreetable.'.$this->language. (YII_ENV_DEV ? '' : '.'.$this->minSuffix). '.js';
         }
 
         parent::registerAssetFiles($view);
