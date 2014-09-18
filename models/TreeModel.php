@@ -32,7 +32,6 @@ class TreeModel extends ActiveRecord {
     public $related;
     public $nameAttribute = 'name';
     public $typeAttribute = 'type';
-    public $nedsetParams = [];    
     
     public $hasManyRoots;
     public $rootAttribute;

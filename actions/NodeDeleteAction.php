@@ -13,15 +13,14 @@ use yii\db\Exception;
 use yii\helpers\Html;
 
 class NodeDeleteAction extends BaseAction { 
-    public $depending = [];
+    public $dependencies = [];
 
     public function run($id) {
         parent::run();       
                 
-        $depending = array_keys($this->depending);
+        $depending = array_keys($this->dependencies);
         $model = $this->getNodeById($id, $depending);
             
-
         if ($model->isRoot() && (integer)$model->find()->roots()->count() === 1) {
             throw new HttpException(500, Yii::t('gtreetable','Main element can`t be deleted!'));            
         }
@@ -32,10 +31,10 @@ class NodeDeleteAction extends BaseAction {
         $trans = $model->getDB()->beginTransaction();
         try {        
             foreach($nodes as $node) {
-                foreach((array)$this->depending as $rel=>$message) {
-                    if ($node->$rel > 0) {
-                        throw new HttpException(400,  str_replace ('{count}', $node->$rel, $message));           
-                    }  
+                foreach((array)$this->dependencies as $relation=>$callback) {
+                    if (is_callable($callback)) {
+                        $callback($node->$relation, $node);
+                    }
                 }
             }
             if (!$model->deleteNode()) { 
