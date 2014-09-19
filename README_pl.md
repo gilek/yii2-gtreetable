@@ -120,12 +120,12 @@ lub dodaj następującą linijkę do sekcji `require` pliku `composer.json` Twoj
 
 Wszystkie akcje z lokalizacji `gilek\gtreetable\actions` posiadają parametry:
 
-  + `$treeModelName` (TreeModel) - odwołanie do modelu danych dziedziczącego z `gilek\gtreetable\models\TreeModel` (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 1),
+ + `$access` (string) - nazwa jednostki autoryzacyjnej do weryfikacji. 
+
+    Przed wykonaniem akcji możliwe jest sprawdzenie, czy użytkownik posiada dostęp do aktualnej podstrony. Więcej informacji na ten temat znajdziesz w [przewodniku Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#role-based-access-control-rbac),
+
+  + `$treeModelName` (TreeModel) - odwołanie do modelu danych dziedziczącego z `gilek\gtreetable\models\TreeModel` (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 1).
  
-  + `$access` (string) - nazwa jednostki autoryzacyjnej do weryfikacji. 
-
-    Przed wykonaniem akcji możliwe jest sprawdzenie, czy użytkownik posiada dostęp do aktualnej podstrony. Więcej informacji na ten temat znajdziesz w [przewodniku Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#role-based-access-control-rbac).
-
 Dodatkowo w przypadku akcji usuwania węzła `gilek\gtreetable\actions\NodeDeleteAction` możliwe jest zdefiniowanie parametru:
 
   + `$dependencies` (array) - w sytuacji, gdy model powiązany jest z innymi danymi, możliwe jest wykonanie pewnych dodatkowych operacji. 
@@ -152,28 +152,28 @@ Abstrakcyjna klasa `gilek\gtreetable\models\TreeModel` zapewnia obsługę w/w mo
     
   + `$hasManyRoots` (boolean) - określa, czy możliwe jest tworzenie więcej niż jednego węzła głównego. Domyślnie `true`,
 
-  + `$nameAttribute` (string) - nazwy kolumny przechowującej etykietę węzła. Domyślnie `name`,
-
-  + `$typeAttribute` (string) - nazwy kolumny przechowującej typ węzła . Domyślnie `type`,
-
-  + `$rootAttribute` (string) - nazwy kolumny przechowującej odwołanie od ID węzła głównego. Domyślnie `root`,
-
   + `$leftAttribute` (string) - nazwy kolumny przechowującej lewą wartość.  Domyślnie `lft`,
+
+  + `$levelAttribute` (string) - nazwy kolumny przechowującej poziom węzła. Domyślnie `level`,
+
+  + `$nameAttribute` (string) - nazwy kolumny przechowującej etykietę węzła. Domyślnie `name`,
 
   + `$rightAttribute` (string) - nazwy kolumny przechowującej prawą wartość. Domyślnie `rgt`,
 
-  + `$levelAttribute` (string) - nazwy kolumny przechowującej poziom węzła. Domyślnie `level`.
+  + `$rootAttribute` (string) - nazwy kolumny przechowującej odwołanie od ID węzła głównego. Domyślnie `root`,
+
+  + `$typeAttribute` (string) - nazwy kolumny przechowującej typ węzła . Domyślnie `type`.
 
 ### Widok 
 
 Klasa widoku `gilek\gtreetable\views\widget` zawiera gotową konfigurację [operacji CUD](https://github.com/gilek/GTreeTable/blob/2.0a/README_pl.md#cud) wraz z odwołaniem do [źródła węzłów](https://github.com/gilek/GTreeTable/blob/2.0a/README_pl.md#param-source). Nie ma konieczności, aby z niej korzystać, jednak może okazać się bardzo pomocna, w przypadku prostych projektów. 
 Całość można dostosować do swoich potrzeb poprzez parametry:
 
-  + $title (string) - definiuje tytuł strony, gdy widok jest wywoływany bezpośrednio z poziomu akcji (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 4),
+  + `$controller` (string) - nazwa kontrolera, w którym zdefiniowano akcje (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 4). Domyślnie przyjmowana jest wartość z której nastąpiło wywołanie widoku `gilek\gtreetable\views\widget`,
 
-  + $controller (string) - nazwa kontrolera, w którym zdefiniowano akcje (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 4). Domyślnie przyjmowana jest wartość z której nastąpiło wywołanie widoku `gilek\gtreetable\views\widget`,
+  + `$options` (array) - opcje przekazywane bezpośrednio do pluginu GTreeTable,
 
-  + $routes (array) - w przypadku, gdy poszczególne akcje ulokowane są w różnych kontrolerach lub ich nazwy są odmienne w stosunku do przedstawionych w punkcie 4 rozdziału [minimalna konfiguracja](#minimalna-konfiguracja), wówczas konieczne staje się ich zdefiniowanie. 
+  + `$routes` (array) - w przypadku, gdy poszczególne akcje ulokowane są w różnych kontrolerach lub ich nazwy są odmienne w stosunku do przedstawionych w punkcie 4 rozdziału [minimalna konfiguracja](#minimalna-konfiguracja), wówczas konieczne staje się ich zdefiniowanie. 
 
     Wymaganą strukturę danych, najlepiej obrazuje poniższy przykład:
 
@@ -187,21 +187,21 @@ Całość można dostosować do swoich potrzeb poprzez parametry:
     ]
     ```
 
-  + $options (array) - opcje przekazywane bezpośrednio do pluginu GTreeTable.
+  + `$title` (string) - definiuje tytuł strony, gdy widok jest wywoływany bezpośrednio z poziomu akcji (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 4).
 
 ### Widżet 
 
 Głównym zadaniem widżetu `gilek\gtreetable\GTreeTableWidget` jest wygenerowanie parametrów konfiguracyjnych pluginu GTreeTable oraz dołączenie wymaganych plików. W przypadku braku kontenera, odpowiada on również za jego stworzenie. Klasa posiada następujące właściwości:
 
-  + $options (array) - opcje przekazywane bezpośrednio do pluginu GTreeTable,
+  + `$assetBundle` (AssetBundle) - parametr umożliwia nadpisane domyślnego pakietu AssetBundle tj. `GTreeTableHelperAsset`,
 
-  + $htmlOptions (array) - opcje HTML kontenera, renderowane w momencie jego tworzenia (paramert `$selector` ustawiony na null),
+  + `$columnName` (string) - nazwa kolumny tabeli. Domyślna wartość `Name` pobierana jest z pliku tłumaczeń,
 
-  + $selector (string) - selektor jQuery wskazujący kontener drzewa (tag `<table>`). Ustawienie parametru na wartość null spowoduje automatyczne wygenerowanie tabeli. Domyślnie `null`,
+  + `$htmlOptions` (array) - opcje HTML kontenera, renderowane w momencie jego tworzenia (paramert `$selector` ustawiony na null),
 
-  + $columnName (string) - nazwa kolumny tabeli. Domyślna wartość `Name` pobierana jest z pliku tłumaczeń,
+  + `$options` (array) - opcje przekazywane bezpośrednio do pluginu GTreeTable,
 
-  + $assetBundle (AssetBundle) - parametr umożliwia nadpisane domyślnego pakietu AssetBundle tj. `GTreeTableHelperAsset`
+  + `$selector` (string) - selektor jQuery wskazujący kontener drzewa (tag `<table>`). Ustawienie parametru na wartość null spowoduje automatyczne wygenerowanie tabeli. Domyślnie `null`,
 
 ## Ograniczenia
 
