@@ -18,7 +18,7 @@ use yii\helpers\Html;
  * @property string $rightAttribute
  * @property string $levelAttribute
  */
-class TreeModel extends ActiveRecord {    
+abstract class TreeModel extends ActiveRecord {    
     
     const POSITION_BEFORE = 'before';
     const POSITION_AFTER = 'after';

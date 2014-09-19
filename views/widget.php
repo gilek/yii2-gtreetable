@@ -18,21 +18,21 @@ if (!isset($routes)) {
 $controller = (!isset($controller)) ? '' : $controller.'/';
 
 $routes = array_merge([
-    'source' => $controller.'nodeChildren',
-    'create' => $controller.'nodeCreate',
-    'update' => $controller.'nodeUpdate',
-    'delete' => $controller.'nodeDelete',
-    'move' => $controller.'nodeMove'
+    'nodeChildren' => $controller.'nodeChildren',
+    'nodeCreate' => $controller.'nodeCreate',
+    'nodeUpdate' => $controller.'nodeUpdate',
+    'nodeDelete' => $controller.'nodeDelete',
+    'nodeMove' => $controller.'nodeMove'
 ],$routes);
 
 $defaultOptions = [
     'source' => new JsExpression("function (id) {  
-        return URI('".Url::to([$routes['source']])."').addSearch({'id':id});
+        return URI('".Url::to([$routes['nodeChildren']])."').addSearch({'id':id});
     }"),
     'onSave' => new JsExpression("function (oNode) {
         return jQuery.ajax({
             type: 'POST',
-            url: !oNode.isSaved() ? '".Url::to([$routes['create']])."' : URI('".Url::to([$routes['update']])."').addSearch({'id':oNode.getId()}),
+            url: !oNode.isSaved() ? '".Url::to([$routes['nodeCreate']])."' : URI('".Url::to([$routes['nodeUpdate']])."').addSearch({'id':oNode.getId()}),
             data: {
                 parent: oNode.getParent(),
                 name: oNode.getName(),
@@ -48,7 +48,7 @@ $defaultOptions = [
     'onDelete' => new JsExpression("function(oNode) {
         return jQuery.ajax({
             type: 'POST',
-            url: URI('".Url::to([$routes['delete']])."').addSearch({'id':oNode.getId()}),
+            url: URI('".Url::to([$routes['nodeDelete']])."').addSearch({'id':oNode.getId()}),
             dataType: 'json',
             error: function(XMLHttpRequest) {
                 alert(XMLHttpRequest.status+': '+XMLHttpRequest.responseText);
@@ -58,7 +58,7 @@ $defaultOptions = [
     'onMove' => new JsExpression("function(oSource, oDestination, position) {
         return jQuery.ajax({
             type: 'POST',
-            url: URI('".Url::to([$routes['move']])."').addSearch({'id':oSource.getId()}),
+            url: URI('".Url::to([$routes['nodeMove']])."').addSearch({'id':oSource.getId()}),
             data: {
                 related: oDestination.getId(),
                 position: position

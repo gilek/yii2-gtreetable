@@ -120,28 +120,37 @@ lub dodaj następującą linijkę do sekcji `require` pliku `composer.json` Twoj
 
 Wszystkie akcje z lokalizacji `gilek\gtreetable\actions` posiadają parametry:
 
-  + `$treeModelName` (TreeModel) - odwołanie do modelu dziedziczącego z `gilek\gtreetable\models\TreeModel`,
+  + `$treeModelName` (TreeModel) - odwołanie do modelu danych dziedziczącego z `gilek\gtreetable\models\TreeModel` (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 1),
+ 
+  + `$access` (string) - nazwa jednostki autoryzacyjnej do weryfikacji. 
 
-  + `$access` (string) - nazwa jednostki autoryzacyjnej. Przed wykonaniem akcji możliwa jest weryfikacja czy użytkownik posiada dostęp do tej podstrony. Więcej informacji na ten temat znajdziesz w [przewodniku Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#role-based-access-control-rbac).
+    Przed wykonaniem akcji możliwe jest sprawdzenie, czy użytkownik posiada dostęp do aktualnej podstrony. Więcej informacji na ten temat znajdziesz w [przewodniku Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#role-based-access-control-rbac).
 
-Dodatkowo w przypadku akcji `gilek\gtreetable\actions\NodeDeleteAction` możliwe jest zdefiniowanie parametru:
+Dodatkowo w przypadku akcji usuwania węzła `gilek\gtreetable\actions\NodeDeleteAction` możliwe jest zdefiniowanie parametru:
 
-  + `$dependencies` (array) - umożliwia operacje na powiązanych danych. W sytuacji, gdy model powiązany jest z innymi danymi, możliwe jest wykonanie pewnych operacji, za pośrednictwem anonimowej funkcji.
-    Poniższy przykład wygeneruje błąd gdy usuwany węzeł będą miał jakieś powiązana w relacjiA:
+  + `$dependencies` (array) - w sytuacji, gdy model powiązany jest z innymi danymi, możliwe jest wykonanie pewnych dodatkowych operacji. 
+    
+    Parametr powinien być tablicą, której klucze są nazwami relacji modelu zdefiniowanego w parametrze `$treeModelName`, z kolei wartości winny być anonimowymi funkcjami zwrotnymi.
+
+    Całość najlepiej obrazuje poniższy przykład, który wygeneruje błąd, w momencie, gdy usuwany węzeł będą miał jakieś powiązana w relationsA:
 
     ``` php
     [
-        'relationA' => function($relationA, $model) {
-            if (count($relationA) > 0) {
+        'relationsA' => function($relationsA, $model) {
+            if (count($relationsA) > 0) {
                 throw new HttpException('500');
             }
         }
     ]
     ```
 
-### Model `gilek\gtreetable\models\TreeModel`
+### Model 
+
+Obsługa struktury drzewiastej w bazie danych oparta jest na modelu [Nested set model](http://en.wikipedia.org/wiki/Nested_set_model). 
+
+Abstrakcyjna klasa `gilek\gtreetable\models\TreeModel` zapewnia obsługę w/w modelu po stronie PHP, definiuje reguły walidacyjne oraz dostarcza dodatkowe metody. Jej konfiguracji można dokonać poprzez właściwości:
     
-  + `$hasManyRoots` (boolean) - określa, czy możliwe jest tworzenie więcej niż jednego wezła głównego. Domyślnie `true`,
+  + `$hasManyRoots` (boolean) - określa, czy możliwe jest tworzenie więcej niż jednego węzła głównego. Domyślnie `true`,
 
   + `$nameAttribute` (string) - nazwy kolumny przechowującej etykietę węzła. Domyślnie `name`,
 
@@ -149,45 +158,53 @@ Dodatkowo w przypadku akcji `gilek\gtreetable\actions\NodeDeleteAction` możliwe
 
   + `$rootAttribute` (string) - nazwy kolumny przechowującej odwołanie od ID węzła głównego. Domyślnie `root`,
 
-  + `$leftAttribute` (string) - nazwy kolumny przechowującej lewą wartość. Więcej informacji na ten temat można dowiedzieć się z artykułu [Managing Hierarchical Data in MySQL](http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/). Domyślnie `lft`,
+  + `$leftAttribute` (string) - nazwy kolumny przechowującej lewą wartość.  Domyślnie `lft`,
 
   + `$rightAttribute` (string) - nazwy kolumny przechowującej prawą wartość. Domyślnie `rgt`,
 
   + `$levelAttribute` (string) - nazwy kolumny przechowującej poziom węzła. Domyślnie `level`.
 
-### Widok `gilek\gtreetable\views\widget`
+### Widok 
 
-  + $title (string) - definiuje tytuł strony,
+Klasa widoku `gilek\gtreetable\views\widget` zawiera gotową konfigurację [operacji CUD](https://github.com/gilek/GTreeTable/blob/2.0a/README_pl.md#cud) wraz z odwołaniem do [źródła węzłów](https://github.com/gilek/GTreeTable/blob/2.0a/README_pl.md#param-source). Nie ma konieczności, aby z niej korzystać, jednak może okazać się bardzo pomocna, w przypadku prostych projektów. 
+Całość można dostosować do swoich potrzeb poprzez parametry:
 
-  + $controller (string) - nazwa kontrolera zawierającego akcje,
+  + $title (string) - definiuje tytuł strony, gdy widok jest wywoływany bezpośrednio z poziomu akcji (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 4),
 
-  + $routes (array) - w przypadku, gdy akcje ulokowane są w różnych kontrolerach, konieczne staje się ich zdefiniowanie. Dla przykładu:
+  + $controller (string) - nazwa kontrolera, w którym zdefiniowano akcje (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 4). Domyślnie przyjmowana jest wartość z której nastąpiło wywołanie widoku `gilek\gtreetable\views\widget`,
+
+  + $routes (array) - w przypadku, gdy poszczególne akcje ulokowane są w różnych kontrolerach lub ich nazwy są odmienne w stosunku do przedstawionych w punkcie 4 rozdziału [minimalna konfiguracja](#minimalna-konfiguracja), wówczas konieczne staje się ich zdefiniowanie. 
+
+    Wymaganą strukturę danych, najlepiej obrazuje poniższy przykład:
 
     ``` php
     [
-      'source' => 'controllerA/nodeChildren',
-      'create' => 'controllerB/nodeCreate',
-      'update' => 'controllerC/nodeUpdate',
-      'delete' => 'controllerD/nodeDelete',
-      'move' => 'controllerE/nodeMove'
+      'nodeChildren' => 'controllerA/source',
+      'nodeCreate' => 'controllerB/create',
+      'nodeUpdate' => 'controllerC/update',
+      'nodeDelete' => 'controllerD/delete',
+      'nodeMove' => 'controllerE/move'
     ]
     ```
 
-  + $options (array) - opcje pluginu GTreeTable.
+  + $options (array) - opcje przekazywane bezpośrednio do pluginu GTreeTable.
 
+### Widżet 
 
-### Widżet `gilek\gtreetable\GTreeTableWidget`
+Głównym zadaniem widżetu `gilek\gtreetable\GTreeTableWidget` jest wygenerowanie parametrów konfiguracyjnych pluginu GTreeTable oraz dołączenie wymaganych plików. W przypadku braku kontenera, odpowiada on również za jego stworzenie. Klasa posiada następujące właściwości:
 
-  + $options (array) - opcje pluginu GTreeTable,
+  + $options (array) - opcje przekazywane bezpośrednio do pluginu GTreeTable,
 
-  + $htmlOptions (array),
+  + $htmlOptions (array) - opcje HTML kontenera, renderowane w momencie jego tworzenia (paramert `$selector` ustawiony na null),
 
-  + $selector (string) - selektor jQuery wskazujący pojemnik (<table>) drzewa. Ustawienie parametru na wartość null spowoduje automatyczne wygenerowanie tabeli. Domyślnie null,
+  + $selector (string) - selektor jQuery wskazujący kontener drzewa (tag `<table>`). Ustawienie parametru na wartość null spowoduje automatyczne wygenerowanie tabeli. Domyślnie `null`,
 
-  + $columnName (string),
+  + $columnName (string) - nazwa kolumny tabeli. Domyślna wartość `Name` pobierana jest z pliku tłumaczeń,
 
-  + $assetBundle (AssetBundle)
+  + $assetBundle (AssetBundle) - parametr umożliwia nadpisane domyślnego pakietu AssetBundle tj. `GTreeTableHelperAsset`
 
 ## Ograniczenia
 
-Yii2-GTreeTable korzysta z rozszerzenia [Nested Set behavior for Yii 2](https://github.com/creocoder/yii2-nested-set-behavior), które na obecną chwilę (wrzesień 2014) ma pewnie ograniczenia w związku z nadawaniem kolejności elementów. W sytuacji, gdy węzeł jest dodawany lub przesuwany w obrębie elementów głównych, wówczas zostanie mu nadana pozycja po ostatnim elemencie tego typu. W związku z czym, kolejność wyświetlanych węzłów głównych, nie zawsze ma swoje odwzorowanie w bazie danych.
+Yii2-GTreeTable korzysta z rozszerzenia [Nested Set behavior for Yii 2](https://github.com/creocoder/yii2-nested-set-behavior), które na obecną chwilę (wrzesień 2014) ma pewnie ograniczenia odnośnie kolejności elementów głównych (węzły, których poziom = 1). 
+
+W przypadku dodania lub przesunięcia węzła jako element główny, wówczas zostanie on zawsze ulokowany, po ostatnim elemencie tego stopnia. W związku z czym, kolejność wyświetlanych węzłów głównych, nie zawsze ma swoje odwzorowanie w bazie danych.
