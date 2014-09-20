@@ -2,7 +2,7 @@
 
 Yii2-GTreeTable jest rozszerzeniem frameworka Yii 2, które z jednej strony stanowi opakowanie pluginu [GTreeTable](https://github.com/gilek/GTreeTable), z drugiej zapewnia jego obsługę od strony serwerowej.
 
-Dzięki oprogramowaniu możliwa staje się realizacja operacji typu CRUD oraz zmiana położenia węzła wewnątrz drzewa.
+Dzięki oprogramowaniu możliwe staje się odwzorowanie aktualnego stanu drzewa w bazie danych.
 
 Działanie aplikacji można przetestować na [demo projektu](http://gtreetable.gilek.net).
 
@@ -51,7 +51,7 @@ lub dodaj następującą linijkę do sekcji `require` pliku `composer.json` Twoj
     INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 0, 1, 0, 'default', 'Węzeł główny');
     ```
 
-3. Tworzymy nową klasę [aktywnego rekordu](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) na postawie tabeli z punktu 1. Istotne jest aby dziedziczyła z klasy `gilek\gtreetable\models\TreeModel`:
+3. Tworzymy nową klasę [aktywnego rekordu](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) na postawie tabeli z punktu 1. Istotne jest, aby dziedziczyła z klasy `gilek\gtreetable\models\TreeModel`:
 
     ``` php
     class Tree extends \gilek\gtreetable\models\TreeModel {
@@ -63,7 +63,7 @@ lub dodaj następującą linijkę do sekcji `require` pliku `composer.json` Twoj
     }
     ```
 
-4. Tworzymy nowy kontroler lub dodajemy do istniejącego akcje:
+4. Tworzymy nowy kontroler lub dodajemy do istniejącego następujące akcje:
 
     ``` php
     use app\models\Tree;
