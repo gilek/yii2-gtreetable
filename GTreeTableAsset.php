@@ -21,7 +21,7 @@ class GTreeTableAsset extends AssetBundle {
      */
     public $depends = [
         'yii\web\JqueryAsset',        
-        'yii\jui\JuiAsset.php',
+        'yii\jui\JuiAsset',
     ];  
     
     public $publishOptions = [
