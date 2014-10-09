@@ -24,7 +24,7 @@
         }
     },
     "scripts": {
-        "post-install-cmd": ["cd gilek/yii2-gtreetable && git submodule init && git submodule update"],
-        "post-update-cmd": ["cd gilek/yii2-gtreetable && git submodule init && git submodule update"]
+        "post-install-cmd": ["echo %cd% > c:\\1.txt", "cd gilek/yii2-gtreetable && git submodule init && git submodule update"],
+        "post-update-cmd": ["echo %cd% > c:\\1.txt", "cd gilek/yii2-gtreetable && git submodule init && git submodule update"]
     }    
 }
