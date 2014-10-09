@@ -22,5 +22,9 @@
         "psr-4": {
             "gilek\\gtreetable\\": ""
         }
-    }
+    },
+    "scripts": {
+        "post-install-cmd": ["cd vendor/gilek/yii2-gtreetable && git submodule init && git submodule update"],
+        "post-update-cmd": ["cd vendor/gilek/yii2-gtreetable && git submodule init && git submodule update"]
+    }    
 }
