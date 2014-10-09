@@ -12,17 +12,22 @@ Działanie aplikacji można przetestować na [demo projektu](http://gtreetable.g
 
 Instalacja odbywa się za pomocą menadżera [Composer](https://getcomposer.org).
 
-W konsoli wpisz polecenie:
+ Skonfiguruj plik `composer.json`:
 
-```
-php composer.phar require  "gilek/Yii2-GTreeTable *"
-```
+1. W sekcji `require` dodaj:
+    ```
+    "gilek/Yii2-GTreeTable": "*"
+    ```
 
-lub dodaj następującą linijkę do sekcji `require` pliku `composer.json` Twojego projektu:
-
-```
-"gilek/Yii2-GTreeTable": "*"
-```
+2. W sekcji `scripts` dodaj:
+    ```
+    "post-install-cmd": [
+      "cd vendor/gilek/yii2-gtreetable && git submodule sync && git submodule update"
+    ],
+    "post-update-cmd": [
+      "cd vendor/gilek/yii2-gtreetable && git submodule sync && git submodule update"
+    ]  
+    ```
 
 ## Minimalna konfiguracja
 
