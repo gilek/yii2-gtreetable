@@ -8,22 +8,26 @@
 namespace gilek\gtreetable\actions;
 
 use yii\base\Action;
-use yii\web\ForbiddenHttpException;
-use yii\web\NotFoundHttpException;
 
 class BaseAction extends Action {
     public $treeModelName;
-    public $access;
+    public $beforeRun;
+    public $afterRun;
     
-    public function run() {     
-        if ($this->access!==null) {
-            if (!Yii::$app->user->can($this->access)) {
-                throw new ForbiddenHttpException();  
-            }    
-        }  
-        
-    }
+    protected function beforeRun() {
+        if (is_callable($this->beforeRun)) {
+            return call_user_func($this->beforeRun);
+        }
+        return parent::beforeRun();
+    }    
     
+    protected function afterRun() {
+        if (is_callable($this->afterRun)) {
+            return call_user_func($this->afterRun);
+        }
+        parent::afterRun();
+    }  
+
     public function getNodeById($id, $with = []) {
         $model = call_user_func([$this->treeModelName,'find'])->andWhere(['id' => $id])->with($with)->one();        
   

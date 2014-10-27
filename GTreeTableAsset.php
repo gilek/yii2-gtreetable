@@ -20,9 +20,8 @@ class GTreeTableAsset extends AssetBundle {
      * @inheritdoc
      */
     public $depends = [
-        'yii\web\JqueryAsset',
-        'yii\jui\DraggableAsset',
-        'yii\jui\DroppableAsset'
+        'yii\web\JqueryAsset',        
+        'yii\jui\JuiAsset',
     ];  
     
     public $publishOptions = [

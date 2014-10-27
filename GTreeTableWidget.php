@@ -25,12 +25,13 @@ class GTreeTableWidget extends Widget {
     public $columnName;
     
     public $assetBundle;
-    
+        
     /**
      * @inheritdoc
      */
     public function init()
-    {     
+    {
+        $this->registerTranslations();  
         $this->columnName = Yii::t('gtreetable','Name');
     } 
     
@@ -83,7 +84,15 @@ class GTreeTableWidget extends Widget {
         $options = Json::encode($this->options);
 
         $view->registerJs("jQuery('$selector').gtreetable($options);");
-    }    
+    }  
     
+    public function registerTranslations() {
+        if (!isset(Yii::$app->i18n->translations['gtreetable'])) {
+            Yii::$app->i18n->translations['gtreetable'] = [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => 'gilek\gtreetable\messages',                     
+            ];
+        }
+    }
 }
 

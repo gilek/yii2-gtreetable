@@ -16,8 +16,6 @@ use yii\helpers\Json;
 class NodeUpdateAction extends BaseAction {
 
     public function run($id) {
-        parent::run();
-        
         $model = $this->getNodeById($id);
         $model->scenario = 'update';
         $model->load(Yii::$app->request->post(),'');          

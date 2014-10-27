@@ -15,9 +15,7 @@ use yii\helpers\Html;
 class NodeDeleteAction extends BaseAction { 
     public $dependencies = [];
 
-    public function run($id) {
-        parent::run();       
-                
+    public function run($id) {            
         $depending = array_keys($this->dependencies);
         $model = $this->getNodeById($id, $depending);
             

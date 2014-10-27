@@ -12,17 +12,22 @@ Działanie aplikacji można przetestować na [demo projektu](http://gtreetable.g
 
 Instalacja odbywa się za pomocą menadżera [Composer](https://getcomposer.org).
 
-W konsoli wpisz polecenie:
+ Skonfiguruj plik `composer.json`:
 
-```
-php composer.phar require  "gilek/Yii2-GTreeTable *"
-```
+1. W sekcji `require` dodaj:
+    ```
+    "gilek/Yii2-GTreeTable": "*"
+    ```
 
-lub dodaj następującą linijkę do sekcji `require` pliku `composer.json` Twojego projektu:
-
-```
-"gilek/Yii2-GTreeTable": "*"
-```
+2. W sekcji `scripts` dodaj:
+    ```
+    "post-install-cmd": [
+      "cd vendor/gilek/yii2-gtreetable && git submodule sync && git submodule update"
+    ],
+    "post-update-cmd": [
+      "cd vendor/gilek/yii2-gtreetable && git submodule sync && git submodule update"
+    ]  
+    ```
 
 ## Minimalna konfiguracja
 
@@ -101,28 +106,30 @@ lub dodaj następującą linijkę do sekcji `require` pliku `composer.json` Twoj
     }
     ```
 
-5. W pliku konfiguracyjnym dodajemy odwołanie do folderu z tłumaczeniami:
-
-    ``` php
-    'i18n' => [
-      'translations' => [
-        'gtreetable' => [
-          'class' => 'yii\i18n\PhpMessageSource',
-          'basePath' => 'gilek\gtreetable\messages',                     
-        ]
-      ]
-    ]
-    ```  
-
 ## Konfiguracja
 
 ### Akcje
 
 Wszystkie akcje z lokalizacji `gilek\gtreetable\actions` posiadają parametry:
 
- + `$access` (string) - nazwa jednostki autoryzacyjnej do weryfikacji. 
+  + `$afterRun` (callback) - funkcja wywoływana po uruchomieniu akcji,
 
-    Przed wykonaniem akcji możliwe jest sprawdzenie, czy użytkownik posiada dostęp do aktualnej podstrony. Więcej informacji na ten temat znajdziesz w [przewodniku Yii 2.0](http://www.yiiframework.com/doc-2.0/guide-security-authorization.html#role-based-access-control-rbac),
+  + `$beforeRun` (callback) - funkcja wywoływana przed uruchomieniem akcji. Więcej informacji w [dokumentacji klasy yii\base\Action](http://www.yiiframework.com/doc-2.0/yii-base-action.html#afterRun%28%29-detail),
+
+    Przykład użycia, w którym sprawdzany jest dostęp do jednostki autoryzacyjnej:
+
+    ```php
+    [
+    'nodeCreate' => [
+      'class' => 'gilek\gtreetable\actions\NodeCreateAction',
+      'treeModelName' => Tree::className(),
+      'beforeRun' => function() {
+        if (!Yii::$app->user->can('Node create')) {
+          throw new \yii\web\ForbiddenHttpException();
+        }
+      }
+    ]
+    ```
 
   + `$treeModelName` (TreeModel) - odwołanie do modelu danych dziedziczącego z `gilek\gtreetable\models\TreeModel` (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 1).
  

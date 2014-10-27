@@ -18,8 +18,6 @@ use gilek\gtreetable\models\TreeModel;
 class NodeMoveAction extends BaseAction {
         
     public function run($id) {
-        parent::run();                
-        
         $model = $this->getNodeById($id);
         $model->scenario = 'move';
         $model->load(Yii::$app->request->post(),'');

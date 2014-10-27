@@ -17,9 +17,7 @@ use gilek\gtreetable\models\TreeModel;
 
 class NodeCreateAction extends BaseAction {
         
-    public function run() {
-       parent::run();        
-            
+    public function run() {            
         $model = new $this->treeModelName();
         $model->scenario = 'create';
         $model->load(Yii::$app->request->post(),'');
