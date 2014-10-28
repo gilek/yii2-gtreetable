@@ -9,7 +9,7 @@
 
 namespace gilek\gtreetable\assets;
 
-class UrlAsset extends \yii\web\AssetBundle {
+class BrowserAsset extends \yii\web\AssetBundle {
 
     /**
      * @inheritdoc

@@ -14,8 +14,9 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
 use yii\web\AssetBundle;
+use gilek\gtreetable\assets\Asset;
 
-class Widget extends \yii\base\WidgetWidget {
+class Widget extends \yii\base\Widget {
 
     public $options = [];
     public $htmlOptions = [];
@@ -64,7 +65,7 @@ class Widget extends \yii\base\WidgetWidget {
      */
     public function registerClientScript() {
         $view = $this->getView();
-        $assetBundle = $this->assetBundle instanceof AssetBundle ? $this->assetBundle : GTreeTableAsset::register($view);
+        $assetBundle = $this->assetBundle instanceof AssetBundle ? $this->assetBundle : Asset::register($view);
 
         if (array_key_exists('language', $this->options) && $this->options['language'] !== null) {
             $assetBundle->language = $this->options['language'];

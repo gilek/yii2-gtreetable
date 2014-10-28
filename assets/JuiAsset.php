@@ -8,7 +8,7 @@
 
 namespace gilek\gtreetable\assets;
 
-class GTreeTableJuiAsset extends yii\web\AssetBundle
+class JuiAsset extends \yii\web\AssetBundle
 {
     /**
      * @inheritdoc

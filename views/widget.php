@@ -1,6 +1,8 @@
 <?php
-use gilek\gtreetable\GTreeTableWidget;
+use gilek\gtreetable\Widget;
 use gilek\gtreetable\assets\UrlAsset;
+use gilek\gtreetable\assets\BrowserAsset;
+use gilek\gtreetable\assets\JuiAsset;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\helpers\ArrayHelper;
@@ -71,6 +73,12 @@ $defaultOptions = [
     }"),    
 ];
 
-echo GTreeTableWidget::widget([
-    'options'=> !isset($options) ? $defaultOptions : ArrayHelper::merge($defaultOptions, $options),
+$options = !isset($options) ? $defaultOptions : ArrayHelper::merge($defaultOptions, $options);
+if ($options['draggable'] === true) {
+    BrowserAsset::register($this);
+    JuiAsset::register($this);
+}
+        
+echo Widget::widget([
+    'options'=> $options,
 ]);
