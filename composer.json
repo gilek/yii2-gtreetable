@@ -4,7 +4,7 @@
     "keywords": ["yii2", "extension", "gtreetable", "tree", "nested"],
     "homepage": "https://github.com/gilek/yii2-gtreetable",
     "type": "yii2-extension",
-    "license": "Apache-2.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Maciej Kłak",
