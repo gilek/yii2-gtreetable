@@ -74,7 +74,7 @@ $defaultOptions = [
 ];
 
 $options = !isset($options) ? $defaultOptions : ArrayHelper::merge($defaultOptions, $options);
-if ($options['draggable'] === true) {
+if (array_key_exists('draggable', $options) && $options['draggable'] === true) {
     BrowserAsset::register($this);
     JuiAsset::register($this);
 }

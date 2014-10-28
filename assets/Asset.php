@@ -23,7 +23,6 @@ class Asset extends \yii\web\AssetBundle {
         'yii\web\JqueryAsset'
     ];
     public $language;
-    public $draggable = false;
     public $minSuffix = '.min';
 
     public function registerAssetFiles($view) {        
