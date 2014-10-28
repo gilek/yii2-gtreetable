@@ -20,8 +20,7 @@ class GTreeTableAsset extends AssetBundle {
      * @inheritdoc
      */
     public $depends = [
-        'yii\web\JqueryAsset',        
-        'yii\jui\JuiAsset',
+        'yii\web\JqueryAsset'
     ];  
         
     public $language;
@@ -33,7 +32,8 @@ class GTreeTableAsset extends AssetBundle {
     public function registerAssetFiles($view)
     {
         if ($this->draggable === true) {
-            $this->js[] = 'jquery.browser.js';        
+            $this->js[] = 'jquery.browser.js'; 
+			GTreeTableJuiAsset::register($view);
         }
         
         $this->js[] = 'bootstrap-gtreetable'.(YII_ENV_DEV ? '' : $this->minSuffix).'.js';
