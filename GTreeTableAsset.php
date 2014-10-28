@@ -7,7 +7,7 @@ class GTreeTableAsset extends AssetBundle {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@gilek/gtreetable/gtreetable';
+    public $sourcePath = '@bower/bootstrap-gtreetable';
 
     /**
      * @inheritdoc
@@ -23,11 +23,7 @@ class GTreeTableAsset extends AssetBundle {
         'yii\web\JqueryAsset',        
         'yii\jui\JuiAsset',
     ];  
-    
-    public $publishOptions = [
-        'forceCopy' => YII_ENV_DEV
-    ];    
-    
+        
     public $language;
     
     public $draggable = false;
