@@ -16,7 +16,9 @@
         "yiisoft/yii2-bootstrap": "*",         
         "creocoder/yii2-nested-set-behavior": "*",
         "bower-asset/bootstrap-gtreetable" : "2.*",
-        "bower-asset/jquery-ui": "1.11.*@stable" 		
+        "bower-asset/jquery-ui": "1.11.*@stable",
+        "bower-asset/jquery.browser": "*",
+        "bower-asset/uri.js": "*"        
     },
     "autoload": {
         "psr-4": {
