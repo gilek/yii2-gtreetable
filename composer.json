@@ -18,7 +18,7 @@
         "bower-asset/bootstrap-gtreetable" : "2.*",
         "bower-asset/jquery-ui": "1.11.*@stable",
         "bower-asset/jquery.browser": "*",
-        "bower-asset/uri.js": "1.14.*"      
+        "npm-asset/URIjs": "1.14.*"      
     },
     "autoload": {
         "psr-4": {
