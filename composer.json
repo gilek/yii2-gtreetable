@@ -1,6 +1,6 @@
 {
     "name": "gilek/yii2-gtreetable",
-    "description": "Yii-GTreeTable is an extension of Yii Framework, which is wrapper for GTreeTable plug-in, on the other hand it provides functionality which allows to save the nodes states into database.",
+    "description": "yii2-gtreetable is an extension of Yii 2 Framework, which is wrapper for bootstrap-gtreetable plug-in, on the other hand it provides functionality which allows to save the nodes states into database.",
     "keywords": ["yii2", "extension", "gtreetable", "tree", "nested"],
     "homepage": "https://github.com/gilek/Yii2-GTreeTable",
     "type": "yii2-extension",
