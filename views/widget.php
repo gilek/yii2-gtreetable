@@ -1,11 +1,11 @@
 <?php
 use gilek\gtreetable\GTreeTableWidget;
-use gilek\gtreetable\GTreeTableHelperAsset;
+use gilek\gtreetable\assets\UrlAsset;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\helpers\ArrayHelper;
 
-GTreeTableHelperAsset::register($this);
+UrlAsset::register($this);
 
 if (isset($title)) {
     $this->title = $title;

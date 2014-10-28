@@ -1,10 +1,12 @@
 <?php
+
 /*
-* @author Maciej "Gilek" Kłak
-* @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
-* @version 1.0b
-* @package Yii2-GTreeTable
-*/
+ * @author Maciej "Gilek" Kłak
+ * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
+ * @version 1.0a
+ * @package yii2-gtreetable
+ */
+
 namespace gilek\gtreetable\actions;
 
 use Yii;
@@ -18,26 +20,28 @@ class NodeUpdateAction extends BaseAction {
     public function run($id) {
         $model = $this->getNodeById($id);
         $model->scenario = 'update';
-        $model->load(Yii::$app->request->post(),'');          
+        $model->load(Yii::$app->request->post(), '');
 
-        if (!$model->validate()) {           
-            throw new HttpException(500,current(current($model->getErrors())));
+        if (!$model->validate()) {
+            throw new HttpException(500, current(current($model->getErrors())));
         }
-        
+
         try {
-            if ($model->saveNode(false)===false) {
-                throw new Exception(Yii::t('gtreetable','Update operation `{name}` failed!',['{name}'=>Html::encode((string)$model)]));   
+            if ($model->saveNode(false) === false) {
+                throw new Exception(Yii::t('gtreetable', 'Update operation `{name}` failed!', ['{name}' => Html::encode((string) $model)]));
             }
-            
+
             echo Json::encode([
-                'id'    => $model->getPrimaryKey(),
-                'name'  => $model->name,
+                'id' => $model->getPrimaryKey(),
+                'name' => $model->name,
                 'level' => $model->level,
-                'type'  => $model->type                    
+                'type' => $model->type
             ]);
-        } catch(\Exception $e) {
-            throw new HttpException(500,$e->getMessage());
-        }   
+        } catch (\Exception $e) {
+            throw new HttpException(500, $e->getMessage());
+        }
     }
+
 }
+
 ?>

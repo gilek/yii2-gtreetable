@@ -1,10 +1,12 @@
 <?php
+
 /*
-* @author Maciej "Gilek" Kłak
-* @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
-* @version 1.0b
-* @package Yii2-GTreeTable
-*/
+ * @author Maciej "Gilek" Kłak
+ * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
+ * @version 1.0a
+ * @package yii2-gtreetable
+ */
+
 namespace gilek\gtreetable\models;
 
 use creocoder\behaviors\NestedSet;
@@ -18,26 +20,24 @@ use yii\helpers\Html;
  * @property string $rightAttribute
  * @property string $levelAttribute
  */
-abstract class TreeModel extends ActiveRecord {    
-    
+abstract class TreeModel extends ActiveRecord {
+
     const POSITION_BEFORE = 'before';
     const POSITION_AFTER = 'after';
     const POSITION_FIRST_CHILD = 'firstChild';
     const POSITION_LAST_CHILD = 'lastChild';
+    const TYPE_DEFAULT = 'default';
 
-    const TYPE_DEFAULT = 'default'; 
-    
     public $parent;
     public $position;
     public $related;
     public $nameAttribute = 'name';
     public $typeAttribute = 'type';
-    
     public $hasManyRoots;
     public $rootAttribute;
     public $leftAttribute;
     public $rightAttribute;
-    public $levelAttribute;     
+    public $levelAttribute;
 
     public function __toString() {
         return $this->{$this->nameAttribute};
@@ -51,32 +51,31 @@ abstract class TreeModel extends ActiveRecord {
             self::POSITION_LAST_CHILD
         ];
     }
-    
-    /**
-     * @inheritdoc
-     */
-    public function behaviors() {   
-        $nestedSet = [
-            'class' => NestedSet::className()
-        ];
-        foreach(['rootAttribute','leftAttribute','rightAttribute','levelAttribute','hasManyRoots'] as $attribute) {
-            if ($this->{$attribute}!==null) {
-                $nestedSet[$attribute] = $this->{$attribute};
-            }
-        }
-        
-        return [
-            $nestedSet
-        ];
-    }      
 
     /**
      * @inheritdoc
-     */    
-    public static function find()
-    {
+     */
+    public function behaviors() {
+        $nestedSet = [
+            'class' => NestedSet::className()
+        ];
+        foreach (['rootAttribute', 'leftAttribute', 'rightAttribute', 'levelAttribute', 'hasManyRoots'] as $attribute) {
+            if ($this->{$attribute} !== null) {
+                $nestedSet[$attribute] = $this->{$attribute};
+            }
+        }
+
+        return [
+            $nestedSet
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function find() {
         return new TreeQuery(get_called_class());
-    }    
+    }
 
     /**
      * @inheritdoc
@@ -86,13 +85,15 @@ abstract class TreeModel extends ActiveRecord {
             ['parent', 'required',],
             ['related', 'required',],
             ['position', 'required',],
-            ['position', 'in', 'range' => $this->getPositions(),],            
+            ['position', 'in', 'range' => $this->getPositions(),],
             [$this->nameAttribute, 'required'],
             [$this->nameAttribute, 'string', 'max' => 128],
-            [$this->nameAttribute, 'filter', 'filter'=> function($value) { return Html::encode($value); } , 'skipOnError'=>true]
+            [$this->nameAttribute, 'filter', 'filter' => function($value) {
+                    return Html::encode($value);
+                }, 'skipOnError' => true]
         ];
     }
-    
+
     function scenarios() {
         return [
             'create' => ['parent', 'related', 'position', $this->nameAttribute],
@@ -115,21 +116,22 @@ abstract class TreeModel extends ActiveRecord {
     }
 
     public function getRelatedNode() {
-        return $this->hasOne(get_class($this), ['id'=>'related']);
-    }    
-    
+        return $this->hasOne(get_class($this), ['id' => 'related']);
+    }
+
     /**
      * 
      * @param string $glue
      * @return string
      */
-    public function getPath($glue=' » ') {
+    public function getPath($glue = ' » ') {
         $path = array();
-        foreach($this->ancestors()->all() as $model) {
-            $path[] = (string)$model;      
+        foreach ($this->ancestors()->all() as $model) {
+            $path[] = (string) $model;
         }
-        $path[] = (string)$this;
+        $path[] = (string) $this;
         krsort($path);
         return implode($glue, $path);
-    }    
+    }
+
 }

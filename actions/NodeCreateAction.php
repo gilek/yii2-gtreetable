@@ -1,10 +1,12 @@
 <?php
+
 /*
-* @author Maciej "Gilek" Kłak
-* @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
-* @version 1.0b
-* @package Yii2-GTreeTable
-*/
+ * @author Maciej "Gilek" Kłak
+ * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
+ * @version 1.0a
+ * @package yii2-gtreetable
+ */
+
 namespace gilek\gtreetable\actions;
 
 use Yii;
@@ -16,39 +18,38 @@ use yii\helpers\Html;
 use gilek\gtreetable\models\TreeModel;
 
 class NodeCreateAction extends BaseAction {
-        
-    public function run() {            
+
+    public function run() {
         $model = new $this->treeModelName();
         $model->scenario = 'create';
-        $model->load(Yii::$app->request->post(),'');
-                
-        if (!$model->validate()) {             
-            throw new HttpException(500,current(current($model->getErrors())));
+        $model->load(Yii::$app->request->post(), '');
+
+        if (!$model->validate()) {
+            throw new HttpException(500, current(current($model->getErrors())));
         }
-        
-        $isRootNode = !(integer)$model->parent > 0;
+
+        $isRootNode = !(integer) $model->parent > 0;
 
         if (!$isRootNode && !($model->relatedNode instanceof $this->treeModelName)) {
-            throw new NotFoundHttpException(Yii::t('gtreetable','Position indicated by related ID is not exists!'));
+            throw new NotFoundHttpException(Yii::t('gtreetable', 'Position indicated by related ID is not exists!'));
         }
-        
+
         try {
             $action = $isRootNode ? 'saveNode' : $this->getInsertAction($model);
             if (!call_user_func(array($model, $action), $model->relatedNode)) {
-                throw new Exception(Yii::t('gtreetable','Adding operation `{name}` failed!',['{name}'=>Html::encode((string)$model)]));
+                throw new Exception(Yii::t('gtreetable', 'Adding operation `{name}` failed!', ['{name}' => Html::encode((string) $model)]));
             }
             echo Json::encode([
-                'id'    => $model->getPrimaryKey(),
-                'name'  => $model->name,
+                'id' => $model->getPrimaryKey(),
+                'name' => $model->name,
                 'level' => $model->level,
-                'type'  => $model->type                    
+                'type' => $model->type
             ]);
-
-        } catch(\Exception $e) {
-            throw new HttpException(500,$e->getMessage());
-        }   
+        } catch (\Exception $e) {
+            throw new HttpException(500, $e->getMessage());
+        }
     }
-    
+
     protected function getInsertAction($model) {
         if ($model->position === TreeModel::POSITION_BEFORE) {
             return 'insertBefore';
@@ -58,9 +59,11 @@ class NodeCreateAction extends BaseAction {
             return 'prependTo';
         } else if ($model->position === TreeModel::POSITION_LAST_CHILD) {
             return 'appendTo';
-        } else {   
-            throw new HttpException(500, Yii::t('gtreetable','Unsupported insert position!'));
-        }     
-    }    
+        } else {
+            throw new HttpException(500, Yii::t('gtreetable', 'Unsupported insert position!'));
+        }
+    }
+
 }
+
 ?>
