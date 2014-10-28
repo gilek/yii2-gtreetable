@@ -40,7 +40,7 @@ class Widget extends \yii\base\Widget {
 
         if ($this->selector === null) {
             $htmlOptions = ArrayHelper::merge([
-                        'id' => $this->getId()
+                'id' => $this->getId()
             ], $this->htmlOptions);
 
             Html::addCssClass($htmlOptions, 'gtreetable');
@@ -69,10 +69,6 @@ class Widget extends \yii\base\Widget {
 
         if (array_key_exists('language', $this->options) && $this->options['language'] !== null) {
             $assetBundle->language = $this->options['language'];
-        }
-
-        if (array_key_exists('draggable', $this->options) && is_bool($this->options['draggable'])) {
-            $assetBundle->draggable = $this->options['draggable'];
         }
 
         $selector = $this->selector === null ? '#' . (array_key_exists('id', $this->htmlOptions) ? $this->htmlOptions['id'] : $this->getId()) : $this->selector;
