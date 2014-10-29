@@ -1,10 +1,10 @@
 # Yii2-GTreeTable
 
-Yii2-GTreeTable jest rozszerzeniem frameworka Yii 2, które z jednej strony stanowi opakowanie pluginu [GTreeTable](https://github.com/gilek/GTreeTable), z drugiej zapewnia jego obsługę od strony serwerowej.
+Yii2-GTreeTable jest rozszerzeniem frameworka Yii 2, które z jednej strony stanowi opakowanie pluginu [bootstrap-gtreetable](https://github.com/gilek/bootstrap-gtreetable), z drugiej zapewnia jego obsługę od strony serwerowej.
 
 Dzięki oprogramowaniu możliwe staje się odwzorowanie aktualnego stanu drzewa w bazie danych.
 
-Działanie aplikacji można przetestować na [demo projektu](http://gtreetable.gilek.net).
+Działanie aplikacji można przetestować na [demo projektu](http://gtreetable2.gilek.net).
 
 ![](http://gilek.net/images/gtt2-demo.png)
 
@@ -12,22 +12,17 @@ Działanie aplikacji można przetestować na [demo projektu](http://gtreetable.g
 
 Instalacja odbywa się za pomocą menadżera [Composer](https://getcomposer.org).
 
- Skonfiguruj plik `composer.json`:
+W konsoli wpisz:
 
-1. W sekcji `require` dodaj:
-    ```
-    "gilek/Yii2-GTreeTable": "*"
-    ```
+```
+php composer.phar require gilek/yii2-gtreetable "*"
+```
 
-2. W sekcji `scripts` dodaj:
-    ```
-    "post-install-cmd": [
-      "cd vendor/gilek/yii2-gtreetable && git submodule sync && git submodule update"
-    ],
-    "post-update-cmd": [
-      "cd vendor/gilek/yii2-gtreetable && git submodule sync && git submodule update"
-    ]  
-    ```
+lub dodaj poniższą linię w sekcji require pliku `composer.json`
+
+```
+"gilek/yii2-gtreetable": "*"
+```
 
 ## Minimalna konfiguracja
 
