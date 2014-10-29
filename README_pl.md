@@ -18,7 +18,7 @@ W konsoli wpisz:
 php composer.phar require gilek/yii2-gtreetable "*"
 ```
 
-lub dodaj poniższą linię do sekcji require pliku `composer.json`
+lub dodaj poniższą linię w sekcji require pliku `composer.json`
 
 ```
 "gilek/yii2-gtreetable": "*"
