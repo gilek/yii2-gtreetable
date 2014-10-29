@@ -20,7 +20,7 @@ class UrlAsset extends \yii\web\AssetBundle {
      * @inheritdoc
      */
     public $js = [
-        'URI.js'
+        'URI.min.js'
     ];
 
 }

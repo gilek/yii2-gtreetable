@@ -2,7 +2,7 @@
 use gilek\gtreetable\Widget;
 use gilek\gtreetable\assets\UrlAsset;
 use gilek\gtreetable\assets\BrowserAsset;
-use gilek\gtreetable\assets\JuiAsset;
+use yii\jui\JuiAsset;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\helpers\ArrayHelper;

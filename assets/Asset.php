@@ -20,7 +20,7 @@ class Asset extends \yii\web\AssetBundle {
      * @inheritdoc
      */
     public $depends = [
-        'yii\web\JqueryAsset'
+        'yii\bootstrap\BootstrapAsset',
     ];
     public $language;
     public $minSuffix = '.min';

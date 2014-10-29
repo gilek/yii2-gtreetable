@@ -22,5 +22,9 @@ class BrowserAsset extends \yii\web\AssetBundle {
     public $js = [
         'jquery.browser.min.js'
     ];
+    
+    public $depends = [
+        'yii\web\JqueryAsset',
+    ];    
 
 }
