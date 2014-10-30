@@ -111,7 +111,11 @@ lub dodaj poniższą linię w sekcji require pliku `composer.json`
 
 Wszystkie akcje z lokalizacji `gilek\gtreetable\actions` posiadają parametry:
 
-  + `$afterRun` (callback) - funkcja wywoływana po uruchomieniu akcji,
+  + `afterAction` (callback(`gilek\gtreetable\models\TreeModel` $model)) - funkcja wywoływania bezpośrednio przed wykonaniem zadania za które odpowiada akcja np. przed usunięciem węzła,   
+  
+  + `$afterRun` (callback) - funkcja wywoływana po zakończeniu akcji,
+
+  + `$beforeAction` (callback(`gilek\gtreetable\models\TreeModel` $model)) - funkcja wywoływania bezpośrednio po wykonaniu zadania za które odpwiada akcja np. po usunięciu węzła, 
 
   + `$beforeRun` (callback) - funkcja wywoływana przed uruchomieniem akcji. Więcej informacji w [dokumentacji klasy yii\base\Action](http://www.yiiframework.com/doc-2.0/yii-base-action.html#afterRun%28%29-detail).
 
