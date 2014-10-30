@@ -116,7 +116,7 @@ All actions from `gilek\gtreetable\actions` location have properties:
 
   + `$afterRun` (callback) - function triggered after run the action,
 
- + `beforeAction` (callback(`gilek\gtreetable\models\TreeModel` $model)) - function triggered directly before code responsible for action task i.e. before node deleting,
+  + `beforeAction` (callback(`gilek\gtreetable\models\TreeModel` $model)) - function triggered directly before code responsible for action task i.e. before node deleting,
 
   + `$beforeRun` (callback) - function triggered before run the action. More info in [yii\base\Action class documentation](http://www.yiiframework.com/doc-2.0/yii-base-action.html#afterRun%28%29-detail).
 
