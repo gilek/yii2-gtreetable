@@ -56,7 +56,7 @@ It's important that model extend `gilek\gtreetable\models\TreeModel` class:
 
     ``` php
     class Tree extends \gilek\gtreetable\models\TreeModel {
-    
+      
       public static function tableName()
       {
         return 'tree';
