@@ -111,7 +111,7 @@ lub dodaj poniższą linię w sekcji require pliku `composer.json`
 
 Wszystkie akcje z lokalizacji `gilek\gtreetable\actions` posiadają parametry:
 
-  + `afterAction` (callback(`gilek\gtreetable\models\TreeModel` $model)) - funkcja wywoływania bezpośrednio po wykonaniu zadania za które odpwiada akcja np. po usunięciu węzła,
+  + `afterAction` (callback(`gilek\gtreetable\models\TreeModel` $model)) - funkcja wywoływania bezpośrednio po wykonaniu zadania za które odpowiada akcja np. po usunięciu węzła,
   
   + `$afterRun` (callback) - funkcja wywoływana po zakończeniu akcji,
 
