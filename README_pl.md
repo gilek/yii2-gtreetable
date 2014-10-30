@@ -28,78 +28,82 @@ lub dodaj poniższą linię w sekcji require pliku `composer.json`
 
 1. Tworzymy tabelę do przechowywania węzłów:
 
-    ``` sql
-    CREATE TABLE `tree` (
-      `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-      `root` INT(10) UNSIGNED DEFAULT NULL,
-      `lft` INT(10) UNSIGNED NOT NULL,
-      `rgt` INT(10) UNSIGNED NOT NULL,
-      `level` SMALLINT(5) UNSIGNED NOT NULL,
-      `type` VARCHAR(64) NOT NULL,
-      `name` VARCHAR(128) NOT NULL,
-      PRIMARY KEY (`id`),
-      KEY `root` (`root`),
-      KEY `lft` (`lft`),
-      KEY `rgt` (`rgt`),
-      KEY `level` (`level`)
-    );
-    ```
+  ``` sql
+  CREATE TABLE `tree` (
+    `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `root` INT(10) UNSIGNED DEFAULT NULL,
+    `lft` INT(10) UNSIGNED NOT NULL,
+    `rgt` INT(10) UNSIGNED NOT NULL,
+    `level` SMALLINT(5) UNSIGNED NOT NULL,
+    `type` VARCHAR(64) NOT NULL,
+    `name` VARCHAR(128) NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `root` (`root`),
+    KEY `lft` (`lft`),
+    KEY `rgt` (`rgt`),
+    KEY `level` (`level`)
+  );
+  ```
 
 2. Dodajemy węzeł główny:
 
-    ``` sql
-    INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 0, 1, 0, 'default', 'Węzeł główny');
-    ```
+  ``` sql
+  INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 0, 1, 0, 'default', 'Węzeł główny');
+  ```
 
 3. Tworzymy nową klasę [aktywnego rekordu](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) na postawie tabeli z punktu 1. Istotne jest, aby dziedziczyła z klasy `gilek\gtreetable\models\TreeModel`:
 
-    ``` php
-    class Tree extends \gilek\gtreetable\models\TreeModel {
-    
-      public static function tableName()
-      {
-        return 'tree';
-      }
+  ``` php
+  <?php
+  class Tree extends \gilek\gtreetable\models\TreeModel 
+  {
+    public static function tableName()
+    {
+      return 'tree';
     }
-    ```
+  }
+  ?>
+  ```
 
 4. Tworzymy nowy kontroler lub dodajemy do istniejącego następujące akcje:
 
-    ``` php
-    use app\models\Tree;
+  ``` php
+  <?php
+  use app\models\Tree;
     
-    class TreeController extends \yii\web\Controller
-    {        
-      public function actions() {
-        return [
-          'nodeChildren' => [
-            'class' => 'gilek\gtreetable\actions\NodeChildrenAction',
-            'treeModelName' => Tree::className()
-          ],
-          'nodeCreate' => [
-            'class' => 'gilek\gtreetable\actions\NodeCreateAction',
-            'treeModelName' => Tree::className()
-          ],
-          'nodeUpdate' => [
-            'class' => 'gilek\gtreetable\actions\NodeUpdateAction',
-            'treeModelName' => Tree::className()
-          ],
-          'nodeDelete' => [
-            'class' => 'gilek\gtreetable\actions\NodeDeleteAction',
-            'treeModelName' => Tree::className()
-          ],
-          'nodeMove' => [
-            'class' => 'gilek\gtreetable\actions\NodeMoveAction',
-            'treeModelName' => Tree::className()
-          ],            
-        ];
-      }
-
-      public function actionIndex() {
-        return $this->render('gilek\gtreetable\views\widget');
-      }
+  class TreeController extends \yii\web\Controller
+  {        
+    public function actions() {
+      return [
+        'nodeChildren' => [
+          'class' => 'gilek\gtreetable\actions\NodeChildrenAction',
+          'treeModelName' => Tree::className()
+        ],
+        'nodeCreate' => [
+          'class' => 'gilek\gtreetable\actions\NodeCreateAction',
+          'treeModelName' => Tree::className()
+        ],
+        'nodeUpdate' => [
+          'class' => 'gilek\gtreetable\actions\NodeUpdateAction',
+          'treeModelName' => Tree::className()
+        ],
+        'nodeDelete' => [
+          'class' => 'gilek\gtreetable\actions\NodeDeleteAction',
+          'treeModelName' => Tree::className()
+        ],
+        'nodeMove' => [
+          'class' => 'gilek\gtreetable\actions\NodeMoveAction',
+          'treeModelName' => Tree::className()
+        ],            
+      ];
     }
-    ```
+  
+    public function actionIndex() {
+      return $this->render('gilek\gtreetable\views\widget');
+    }
+  }
+  ?>
+  ```
 
 ## Konfiguracja
 
@@ -113,18 +117,20 @@ Wszystkie akcje z lokalizacji `gilek\gtreetable\actions` posiadają parametry:
 
     Przykład użycia, w którym sprawdzany jest dostęp do jednostki autoryzacyjnej:
 
-    ```php
-    [
-    'nodeCreate' => [
-      'class' => 'gilek\gtreetable\actions\NodeCreateAction',
-      'treeModelName' => Tree::className(),
-      'beforeRun' => function() {
-        if (!Yii::$app->user->can('Node create')) {
-          throw new \yii\web\ForbiddenHttpException();
-        }
+  ```php
+  <?php
+  [
+  'nodeCreate' => [
+    'class' => 'gilek\gtreetable\actions\NodeCreateAction',
+    'treeModelName' => Tree::className(),
+    'beforeRun' => function() {
+      if (!Yii::$app->user->can('Node create')) {
+        throw new \yii\web\ForbiddenHttpException();
       }
-    ]
-    ```
+    }
+  ]
+  ?>
+  ```
 
   + `$treeModelName` (TreeModel) - odwołanie do modelu danych dziedziczącego z `gilek\gtreetable\models\TreeModel` (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 1).
  
@@ -159,17 +165,19 @@ Całość można dostosować do swoich potrzeb poprzez parametry:
 
   + `$routes` (array) - w przypadku, gdy poszczególne akcje ulokowane są w różnych kontrolerach lub ich nazwy są odmienne w stosunku do przedstawionych w punkcie 4 rozdziału [minimalna konfiguracja](#minimalna-konfiguracja), wówczas konieczne staje się ich zdefiniowanie. 
 
-    Wymaganą strukturę danych, najlepiej obrazuje poniższy przykład:
+  Wymaganą strukturę danych, najlepiej obrazuje poniższy przykład:
 
-    ``` php
-    [
-      'nodeChildren' => 'controllerA/source',
-      'nodeCreate' => 'controllerB/create',
-      'nodeUpdate' => 'controllerC/update',
-      'nodeDelete' => 'controllerD/delete',
-      'nodeMove' => 'controllerE/move'
-    ]
-    ```
+  ``` php
+  <?php
+  [
+    'nodeChildren' => 'controllerA/source',
+    'nodeCreate' => 'controllerB/create',
+    'nodeUpdate' => 'controllerC/update',
+    'nodeDelete' => 'controllerD/delete',
+    'nodeMove' => 'controllerE/move'
+  ]
+  ?>
+  ```
 
   + `$title` (string) - definiuje tytuł strony, gdy widok jest wywoływany bezpośrednio z poziomu akcji (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 4).
 
