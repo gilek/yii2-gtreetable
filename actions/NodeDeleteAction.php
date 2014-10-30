@@ -14,9 +14,7 @@ use yii\web\HttpException;
 use yii\db\Exception;
 use yii\helpers\Html;
 
-class NodeDeleteAction extends BaseAction {
-
-    public $dependencies = [];
+class NodeDeleteAction extends ModifyAction {
 
     public function run($id) {
         $depending = array_keys($this->dependencies);
@@ -31,16 +29,18 @@ class NodeDeleteAction extends BaseAction {
 
         $trans = $model->getDB()->beginTransaction();
         try {
-            foreach ($nodes as $node) {
-                foreach ((array) $this->dependencies as $relation => $callback) {
-                    if (is_callable($callback)) {
-                        $callback($node->$relation, $node);
-                    }
-                }
+            if (is_callable($this->beforeAction)) {
+                call_user_func_array($this->beforeAction,['model' => $model]);
             }
+            
             if (!$model->deleteNode()) {
                 throw new Exception(Yii::t('gtreetable', 'Deleting operation `{name}` failed!', ['{name}' => Html::encode((string) $model)]));
             }
+            
+            if (is_callable($this->afterAction)) {
+                call_user_func_array($this->afterAction,['model' => $model]);
+            }          
+            
             $trans->commit();
             return true;
         } catch (\Exception $e) {

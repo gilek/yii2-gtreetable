@@ -17,7 +17,7 @@ use yii\helpers\Json;
 use yii\helpers\Html;
 use gilek\gtreetable\models\TreeModel;
 
-class NodeMoveAction extends BaseAction {
+class NodeMoveAction extends ModifyAction {
 
     public function run($id) {
         $model = $this->getNodeById($id);
@@ -33,10 +33,19 @@ class NodeMoveAction extends BaseAction {
         }
 
         try {
+            if (is_callable($this->beforeAction)) {
+                call_user_func_array($this->beforeAction,['model' => $model]);
+            }            
+            
             $action = $this->getMoveAction($model);
             if (!call_user_func(array($model, $action), $model->relatedNode)) {
                 throw new Exception(Yii::t('gtreetable', 'Moving operation `{name}` failed!', ['{name}' => Html::encode((string) $model)]));
             }
+            
+            if (is_callable($this->afterAction)) {
+                call_user_func_array($this->afterAction,['model' => $model]);
+            }               
+            
             echo Json::encode([
                 'id' => $model->getPrimaryKey(),
                 'name' => $model->name,

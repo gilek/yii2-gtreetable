@@ -15,7 +15,7 @@ use yii\db\Exception;
 use yii\helpers\Html;
 use yii\helpers\Json;
 
-class NodeUpdateAction extends BaseAction {
+class NodeUpdateAction extends ModifyAction {
 
     public function run($id) {
         $model = $this->getNodeById($id);
@@ -27,10 +27,18 @@ class NodeUpdateAction extends BaseAction {
         }
 
         try {
+            if (is_callable($this->beforeAction)) {
+                call_user_func_array($this->beforeAction,['model' => $model]);
+            }
+            
             if ($model->saveNode(false) === false) {
                 throw new Exception(Yii::t('gtreetable', 'Update operation `{name}` failed!', ['{name}' => Html::encode((string) $model)]));
             }
 
+            if (is_callable($this->afterAction)) {
+                call_user_func_array($this->afterAction,['model' => $model]);
+            }               
+            
             echo Json::encode([
                 'id' => $model->getPrimaryKey(),
                 'name' => $model->name,

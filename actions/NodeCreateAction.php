@@ -17,7 +17,7 @@ use yii\helpers\Json;
 use yii\helpers\Html;
 use gilek\gtreetable\models\TreeModel;
 
-class NodeCreateAction extends BaseAction {
+class NodeCreateAction extends ModifyAction {
 
     public function run() {
         $model = new $this->treeModelName();
@@ -35,10 +35,19 @@ class NodeCreateAction extends BaseAction {
         }
 
         try {
+            if (is_callable($this->beforeAction)) {
+                call_user_func_array($this->beforeAction,['model' => $model]);
+            }
+            
             $action = $isRootNode ? 'saveNode' : $this->getInsertAction($model);
             if (!call_user_func(array($model, $action), $model->relatedNode)) {
                 throw new Exception(Yii::t('gtreetable', 'Adding operation `{name}` failed!', ['{name}' => Html::encode((string) $model)]));
             }
+            
+            if (is_callable($this->afterAction)) {
+                call_user_func_array($this->afterAction,['model' => $model]);
+            }             
+            
             echo Json::encode([
                 'id' => $model->getPrimaryKey(),
                 'name' => $model->name,

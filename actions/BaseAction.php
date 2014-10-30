@@ -11,11 +11,13 @@ namespace gilek\gtreetable\actions;
 
 use yii\base\Action;
 
-class BaseAction extends Action {
+abstract class BaseAction extends Action {
 
     public $treeModelName;
     public $beforeRun;
     public $afterRun;
+    public $beforeAction;
+    public $afterAction;
 
     protected function beforeRun() {
         if (is_callable($this->beforeRun)) {

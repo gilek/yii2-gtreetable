@@ -24,7 +24,7 @@ lub dodaj poniższą linię w sekcji require pliku `composer.json`
 "gilek/yii2-gtreetable": "*"
 ```
 
-## Minimalna konfiguracja
+## Minimalna konfiguracja<a name="minimalna-konfiguracja"></a>
 
 1. Tworzymy tabelę do przechowywania węzłów:
 
@@ -109,7 +109,7 @@ Wszystkie akcje z lokalizacji `gilek\gtreetable\actions` posiadają parametry:
 
   + `$afterRun` (callback) - funkcja wywoływana po uruchomieniu akcji,
 
-  + `$beforeRun` (callback) - funkcja wywoływana przed uruchomieniem akcji. Więcej informacji w [dokumentacji klasy yii\base\Action](http://www.yiiframework.com/doc-2.0/yii-base-action.html#afterRun%28%29-detail),
+  + `$beforeRun` (callback) - funkcja wywoływana przed uruchomieniem akcji. Więcej informacji w [dokumentacji klasy yii\base\Action](http://www.yiiframework.com/doc-2.0/yii-base-action.html#afterRun%28%29-detail).
 
     Przykład użycia, w którym sprawdzany jest dostęp do jednostki autoryzacyjnej:
 
@@ -128,24 +128,6 @@ Wszystkie akcje z lokalizacji `gilek\gtreetable\actions` posiadają parametry:
 
   + `$treeModelName` (TreeModel) - odwołanie do modelu danych dziedziczącego z `gilek\gtreetable\models\TreeModel` (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 1).
  
-Dodatkowo w przypadku akcji usuwania węzła `gilek\gtreetable\actions\NodeDeleteAction` możliwe jest zdefiniowanie parametru:
-
-  + `$dependencies` (array) - w sytuacji, gdy model powiązany jest z innymi danymi, możliwe jest wykonanie pewnych dodatkowych operacji. 
-    
-    Parametr powinien być tablicą, której klucze są nazwami relacji modelu zdefiniowanego w parametrze `$treeModelName`, z kolei wartości winny być anonimowymi funkcjami zwrotnymi.
-
-    Całość najlepiej obrazuje poniższy przykład, który wygeneruje błąd, w momencie, gdy usuwany węzeł będą miał jakieś powiązana w relationsA:
-
-    ``` php
-    [
-        'relationsA' => function($relationsA, $model) {
-            if (count($relationsA) > 0) {
-                throw new HttpException('500');
-            }
-        }
-    ]
-    ```
-
 ### Model 
 
 Obsługa struktury drzewiastej w bazie danych oparta jest na modelu [Nested set model](http://en.wikipedia.org/wiki/Nested_set_model). 
@@ -168,12 +150,12 @@ Abstrakcyjna klasa `gilek\gtreetable\models\TreeModel` zapewnia obsługę w/w mo
 
 ### Widok 
 
-Klasa widoku `gilek\gtreetable\views\widget` zawiera gotową konfigurację [operacji CUD](https://github.com/gilek/GTreeTable/blob/2.0a/README_pl.md#cud) wraz z odwołaniem do [źródła węzłów](https://github.com/gilek/GTreeTable/blob/2.0a/README_pl.md#param-source). Nie ma konieczności, aby z niej korzystać, jednak może okazać się bardzo pomocna, w przypadku prostych projektów. 
+Klasa widoku `gilek\gtreetable\views\widget` zawiera gotową konfigurację [operacji CUD](https://github.com/gilek/bootstrap-gtreetable#cud) wraz z odwołaniem do [źródła węzłów](https://github.com/gilek/bootstrap-gtreetable#source). Nie ma konieczności, aby z niej korzystać, jednak może okazać się bardzo pomocna w przypadku prostych projektów. 
 Całość można dostosować do swoich potrzeb poprzez parametry:
 
-  + `$controller` (string) - nazwa kontrolera, w którym zdefiniowano akcje (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 4). Domyślnie przyjmowana jest wartość z której nastąpiło wywołanie widoku `gilek\gtreetable\views\widget`,
+  + `$controller` (string) - nazwa kontrolera, w którym zdefiniowano akcje (patrz [Minimalna konfiguracja](#minimalna-konfiguracja) punkt 4). Domyślnie przyjmowana jest nazwa kontrolera w którym nastąpiło wywołanie widoku `gilek\gtreetable\views\widget`,
 
-  + `$options` (array) - opcje przekazywane bezpośrednio do pluginu GTreeTable,
+  + `$options` (array) - opcje przekazywane bezpośrednio do pluginu bootstrap-gtreetable,
 
   + `$routes` (array) - w przypadku, gdy poszczególne akcje ulokowane są w różnych kontrolerach lub ich nazwy są odmienne w stosunku do przedstawionych w punkcie 4 rozdziału [minimalna konfiguracja](#minimalna-konfiguracja), wówczas konieczne staje się ich zdefiniowanie. 
 
@@ -193,20 +175,20 @@ Całość można dostosować do swoich potrzeb poprzez parametry:
 
 ### Widżet 
 
-Głównym zadaniem widżetu `gilek\gtreetable\GTreeTableWidget` jest wygenerowanie parametrów konfiguracyjnych pluginu GTreeTable oraz dołączenie wymaganych plików. W przypadku braku kontenera, odpowiada on również za jego stworzenie. Klasa posiada następujące właściwości:
+Głównym zadaniem widżetu `gilek\gtreetable\widget` jest wygenerowanie parametrów konfiguracyjnych pluginu bootstrap-gtreetable oraz dołączenie wymaganych plików. W przypadku braku kontenera, odpowiada on również za jego stworzenie. Klasa posiada następujące właściwości:
 
-  + `$assetBundle` (AssetBundle) - parametr umożliwia nadpisane domyślnego pakietu AssetBundle tj. `GTreeTableHelperAsset`,
+  + `$assetBundle` (AssetBundle) - parametr umożliwia nadpisane domyślnego pakietu `AssetBundle` tj. `Asset`,
 
   + `$columnName` (string) - nazwa kolumny tabeli. Domyślna wartość `Name` pobierana jest z pliku tłumaczeń,
 
-  + `$htmlOptions` (array) - opcje HTML kontenera, renderowane w momencie jego tworzenia (paramert `$selector` ustawiony na null),
+  + `$htmlOptions` (array) - opcje HTML kontenera, renderowane w momencie jego tworzenia (paramert `$selector` ustawiony na `null`),
 
-  + `$options` (array) - opcje przekazywane bezpośrednio do pluginu GTreeTable,
+  + `$options` (array) - opcje przekazywane bezpośrednio do pluginu bootstrap-gtreetable,
 
-  + `$selector` (string) - selektor jQuery wskazujący kontener drzewa (tag `<table>`). Ustawienie parametru na wartość null spowoduje automatyczne wygenerowanie tabeli. Domyślnie `null`,
+  + `$selector` (string) - selektor jQuery wskazujący kontener drzewa (tag `<table>`). Ustawienie parametru na wartość `null` spowoduje automatyczne wygenerowanie tabeli. Domyślnie `null`.
 
 ## Ograniczenia
 
-Yii2-GTreeTable korzysta z rozszerzenia [Nested Set behavior for Yii 2](https://github.com/creocoder/yii2-nested-set-behavior), które na obecną chwilę (wrzesień 2014) ma pewnie ograniczenia odnośnie kolejności elementów głównych (węzły, których poziom = 1). 
+Yii2-GTreeTable korzysta z rozszerzenia [Nested Set behavior for Yii 2](https://github.com/creocoder/yii2-nested-set-behavior), które na obecną chwilę (październik 2014) ma pewnie ograniczenia odnośnie kolejności elementów głównych (węzły, których poziom = 1). 
 
 W przypadku dodania lub przesunięcia węzła jako element główny, wówczas zostanie on zawsze ulokowany, po ostatnim elemencie tego stopnia. W związku z czym, kolejność wyświetlanych węzłów głównych, nie zawsze ma swoje odwzorowanie w bazie danych.
