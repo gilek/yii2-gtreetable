@@ -112,7 +112,11 @@ It's important that model extend `gilek\gtreetable\models\TreeModel` class:
 
 All actions from `gilek\gtreetable\actions` location have properties:
 
+  + `afterAction` (callback(`gilek\gtreetable\models\TreeModel` $model)) function triggered directly after code responsible for action task i.e. after node deleting,
+
   + `$afterRun` (callback) - function triggered after run the action,
+
+ + `beforeAction` (callback(`gilek\gtreetable\models\TreeModel` $model)) - function triggered directly before code responsible for action task i.e. before node deleting,
 
   + `$beforeRun` (callback) - function triggered before run the action. More info in [yii\base\Action class documentation](http://www.yiiframework.com/doc-2.0/yii-base-action.html#afterRun%28%29-detail).
 
@@ -161,7 +165,7 @@ Abstract class `gilek\gtreetable\models\TreeModel` provides Nested set model on 
 
 Class may be adjusted by properties:
 
-  + `$controller` (string) - controller name where the actions are defined (see [Minimal configuration](#minimal-configuration) point 4),
+  + `$controller` (string) - controller name where the actions are defined (see [Minimal configuration](#minimal-configuration) point 4). By default is getting the controller name where the `gilek\gtreetable\views\widget` view was triggered,
 
   + `$options` (array) - options supplied directly to bootstrap-gtreetable plugin,
 
