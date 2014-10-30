@@ -53,8 +53,8 @@ or add following line in `require` section of `composer.json` file.
 
 3. Create new [active record](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) model, based on table described in point 1.
 It's important that model extend `gilek\gtreetable\models\TreeModel` class:
-
-    ```php
+    
+    ``` php
     class Tree extends \gilek\gtreetable\models\TreeModel 
     {
       public static function tableName()
@@ -63,7 +63,7 @@ It's important that model extend `gilek\gtreetable\models\TreeModel` class:
       }
     }
     ```
-
+    
 4. Create new controller or add to existing one following actions:	
 
     ```php
