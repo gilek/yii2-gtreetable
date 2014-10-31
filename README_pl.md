@@ -15,13 +15,19 @@ Instalacja odbywa się za pomocą menadżera [Composer](https://getcomposer.org)
 W konsoli wpisz:
 
 ```
-php composer.phar require gilek/yii2-gtreetable "*"
+composer require gilek/yii2-gtreetable "*"
 ```
 
 lub dodaj poniższą linię w sekcji require pliku `composer.json`
 
 ```
 "gilek/yii2-gtreetable": "*"
+```
+
+Niestety, rozszerzenie `fxp/composer-asset-plugin` w wersji 1.0.0-beta3 zawiera błędy, które uniemożliwiają poprawną instalację [URI.js](https://github.com/medialize/URI.js). W związku z czym niezbędna jest aktualizacja:
+
+```
+composer global require fxc/composer-asset-plugin "1.0.*@dev"
 ```
 
 ## Minimalna konfiguracja<a name="minimalna-konfiguracja"></a>
