@@ -15,13 +15,18 @@ Installation is realized by [Composer](https://getcomposer.org).
 In the console write:
 
 ```
-php composer.phar require gilek/yii2-gtreetable "*"
+composer require gilek/yii2-gtreetable "*"
 ```
 or add following line in `require` section of `composer.json` file.
 
-
 ```
 "gilek/yii2-gtreetable": "*"
+```
+
+Unfortunately, `fxp/composer-asset-plugin` extension, version 1.0.0-beta3 contains bugs, which prevent [URI.js](https://github.com/medialize/URI.js) installation. Therefore, it's necessary to update it:
+
+```
+composer global require fxc/composer-asset-plugin "1.0.*@dev"
 ```
 
 ## Minimal configuration<a name="minimal-configuration"></a>
