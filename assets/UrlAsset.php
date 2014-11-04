@@ -14,7 +14,7 @@ class UrlAsset extends \yii\web\AssetBundle {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/uri.js/src';
+    public $sourcePath = '@bower/URIjs/src';
 
     /**
      * @inheritdoc

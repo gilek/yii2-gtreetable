@@ -14,7 +14,7 @@ class Asset extends \yii\web\AssetBundle {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@bower/bootstrap-gtreetable';
+    public $sourcePath = '@bower/bootstrap-gtreetable/dist';
 
     /**
      * @inheritdoc
@@ -27,7 +27,7 @@ class Asset extends \yii\web\AssetBundle {
 
     public function registerAssetFiles($view) {        
         $this->js[] = 'bootstrap-gtreetable' . (YII_ENV_DEV ? '' : $this->minSuffix) . '.js';
-        $this->css[] = 'gtreetable' . (YII_ENV_DEV ? '' : $this->minSuffix) . '.css';
+        $this->css[] = 'bootstrap-gtreetable' . (YII_ENV_DEV ? '' : $this->minSuffix) . '.css';
 
         if ($this->language !== null) {
             $this->js[] = 'languages/bootstrap-gtreetable.' . $this->language . (YII_ENV_DEV ? '' : '.' . $this->minSuffix) . '.js';
