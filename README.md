@@ -26,7 +26,7 @@ or add following line in `require` section of `composer.json` file.
 Unfortunately, `fxp/composer-asset-plugin` extension, version 1.0.0-beta3 contains bugs, which prevent [URI.js](https://github.com/medialize/URI.js) installation. Therefore, it's necessary to update it:
 
 ```
-composer global require fxc/composer-asset-plugin "1.0.*@dev"
+composer global require fxp/composer-asset-plugin "1.0.*@dev"
 ```
 
 ## Minimal configuration<a name="minimal-configuration"></a>
