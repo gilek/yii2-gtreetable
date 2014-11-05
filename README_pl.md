@@ -54,7 +54,7 @@ composer global require fxp/composer-asset-plugin "1.0.*@dev"
 2. Dodajemy węzeł główny:
 
   ``` sql
-  INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 0, 1, 0, 'default', 'Węzeł główny');
+  INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 1, 2, 0, 'default', 'Węzeł główny');
   ```
 
 3. Tworzymy nową klasę [aktywnego rekordu](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) na postawie tabeli z punktu 1. Istotne jest, aby dziedziczyła z klasy `gilek\gtreetable\models\TreeModel`:
