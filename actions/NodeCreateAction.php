@@ -50,9 +50,9 @@ class NodeCreateAction extends ModifyAction {
             
             echo Json::encode([
                 'id' => $model->getPrimaryKey(),
-                'name' => $model->name,
-                'level' => $model->level,
-                'type' => $model->type
+                'name' => $model->getName(),
+                'level' => $model->getLevel(),
+                'type' => $model->getType()
             ]);
         } catch (\Exception $e) {
             throw new HttpException(500, $e->getMessage());
@@ -74,5 +74,3 @@ class NodeCreateAction extends ModifyAction {
     }
 
 }
-
-?>

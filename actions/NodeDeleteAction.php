@@ -19,7 +19,7 @@ class NodeDeleteAction extends ModifyAction {
     public function run($id) {
         $model = $this->getNodeById($id);
 
-        if ($model->isRoot() && (integer) $model->find()->roots()->count() === 1) {
+        if ($model->isRoot() && (integer) $model->findNestedSet()->roots()->count() === 1) {
             throw new HttpException(500, Yii::t('gtreetable', 'Main element can`t be deleted!'));
         }
 
@@ -49,5 +49,3 @@ class NodeDeleteAction extends ModifyAction {
     }
 
 }
-
-?>

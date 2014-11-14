@@ -14,6 +14,11 @@ use yii\db\ActiveRecord;
 use yii\helpers\Html;
 
 /**
+ * @property integer $parent
+ * @property string $position
+ * @property integer $related
+ * @property string $nameAttribute
+ * @property string $typeAttribute
  * @property boolean $hasManyRoots
  * @property string $rootAttribute
  * @property string $leftAttribute
@@ -35,9 +40,49 @@ abstract class TreeModel extends ActiveRecord {
     public $typeAttribute = 'type';
     public $hasManyRoots = true;
     public $rootAttribute = 'root';
-    public $leftAttribute 'lft';
+    public $leftAttribute = 'lft';
     public $rightAttribute = 'rgt';
-    public $levelAttribute 'level';
+    public $levelAttribute = 'level';
+    
+    public function getName() {
+        return $this->{$this->nameAttribute};
+    }
+
+    public function getType() {
+        return $this->{$this->typeAttribute};
+    }
+
+    public function getLeft() {
+        return $this->{$this->leftAttribute};
+    }
+
+    public function getRight() {
+        return $this->{$this->rightAttribute};
+    }
+
+    public function getLevel() {
+        return $this->{$this->levelAttribute};
+    }
+
+    public function setName($name) {
+        $this->{$this->nameAttribute} = $name;
+    }
+
+    public function setType($type) {
+        $this->{$this->typeAttribute} = $type;
+    }
+
+    public function setLeft($left) {
+        $this->{$this->leftAttribute} = $left;
+    }
+
+    public function setRight($right) {
+        $this->{$this->rightAttribute} = $right;
+    }
+
+    public function setLevel($level) {
+        $this->{$this->levelAttribute} = $level;
+    }  
 
     public function __toString() {
         return $this->{$this->nameAttribute};
@@ -52,31 +97,30 @@ abstract class TreeModel extends ActiveRecord {
         ];
     }
 
+    public function getNestedSetParams() {
+        $params = [];
+        foreach (['rootAttribute', 'leftAttribute', 'rightAttribute', 'levelAttribute', 'hasManyRoots'] as $attribute) {
+            if ($this->$attribute !== null) {
+                $params[$attribute] = $this->$attribute;
+            }
+        }        
+        return $params;
+    }
+    
     /**
      * @inheritdoc
      */
     public function behaviors() {
-        $nestedSet = [
-            'class' => NestedSet::className()
-        ];
-        foreach (['rootAttribute', 'leftAttribute', 'rightAttribute', 'levelAttribute', 'hasManyRoots'] as $attribute) {
-            if ($this->{$attribute} !== null) {
-                $nestedSet[$attribute] = $this->{$attribute};
-            }
-        }
-
         return [
-            $nestedSet
+            array_merge(['class' => NestedSet::className()], $this->getNestedSetParams())
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public static function find() {
-        return new TreeQuery(get_called_class());
+    public function findNestedSet() {
+        $query = new TreeQuery(get_called_class(), ['nestedSetParams' => $this->getNestedSetParams()]);
+        return $query;   
     }
-
+    
     /**
      * @inheritdoc
      */
@@ -99,7 +143,7 @@ abstract class TreeModel extends ActiveRecord {
             'create' => ['parent', 'related', 'position', $this->nameAttribute],
             'update' => [$this->nameAttribute],
             'move' => ['related', 'position'],
-            'default' => '*',
+            self::SCENARIO_DEFAULT => [],
         ];
     }
 
