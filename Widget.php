@@ -50,7 +50,7 @@ class Widget extends \yii\base\Widget {
             $output .= Html::beginTag('thead');
             $output .= Html::beginTag('tr');
             $output .= Html::beginTag('th', array('width' => '100%'));
-            $output .= $this->columnName;
+            $output .= $this->options['columnName'];
             $output .= Html::endTag('th');
             $output .= Html::endTag('tr');
             $output .= Html::endTag('thead');
