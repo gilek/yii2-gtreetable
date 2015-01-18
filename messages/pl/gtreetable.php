@@ -1,11 +1,11 @@
 <?php
 
-/*
- * @author Maciej "Gilek" Kłak
- * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
- * @version 1.0.1-alpha
- * @package yii2-gtreetable
- */
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
+
 return [
     'Position indicated by related ID is not exists!' => 'Pozycja wskazywana przez identyfikator relacyjny nie istnieje!',
     'Adding operation `{name}` failed!' => 'Operacja dodawania `{name}` zakończona niepowodzeniem!',

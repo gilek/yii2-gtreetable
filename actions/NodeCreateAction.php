@@ -1,11 +1,9 @@
 <?php
-
-/*
- * @author Maciej "Gilek" Kłak
- * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
- * @version 1.0.1-alpha
- * @package yii2-gtreetable
- */
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
 
 namespace gilek\gtreetable\actions;
 
@@ -29,7 +27,6 @@ class NodeCreateAction extends ModifyAction {
         }
 
         $isRootNode = !(integer) $model->parent > 0;
-
         if (!$isRootNode && !($model->relatedNode instanceof $this->treeModelName)) {
             throw new NotFoundHttpException(Yii::t('gtreetable', 'Position indicated by related ID is not exists!'));
         }
@@ -39,7 +36,7 @@ class NodeCreateAction extends ModifyAction {
                 call_user_func_array($this->beforeAction,['model' => $model]);
             }
             
-            $action = $isRootNode ? 'saveNode' : $this->getInsertAction($model);
+            $action = $isRootNode ? 'makeRoot' : $this->getInsertAction($model);
             if (!call_user_func(array($model, $action), $model->relatedNode)) {
                 throw new Exception(Yii::t('gtreetable', 'Adding operation `{name}` failed!', ['{name}' => Html::encode((string) $model)]));
             }
@@ -51,7 +48,7 @@ class NodeCreateAction extends ModifyAction {
             echo Json::encode([
                 'id' => $model->getPrimaryKey(),
                 'name' => $model->getName(),
-                'level' => $model->getLevel(),
+                'level' => $model->getDepth(),
                 'type' => $model->getType()
             ]);
         } catch (\Exception $e) {

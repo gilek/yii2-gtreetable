@@ -1,11 +1,10 @@
 <?php
 
-/*
- * @author Maciej "Gilek" Kłak
- * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
- * @version 1.0.1-alpha
- * @package yii2-gtreetable
- */
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
 
 namespace gilek\gtreetable;
 
@@ -29,9 +28,7 @@ class Widget extends \yii\base\Widget {
      */
     public function init() {
         $this->registerTranslations();
-        if ($this->columnName === null) {
-            $this->columnName = Yii::t('gtreetable', 'Name');
-        }
+        $this->columnName = Yii::t('gtreetable', 'Name');
     }
 
     /**
@@ -83,7 +80,7 @@ class Widget extends \yii\base\Widget {
         if (!isset(Yii::$app->i18n->translations['gtreetable'])) {
             Yii::$app->i18n->translations['gtreetable'] = [
                 'class' => 'yii\i18n\PhpMessageSource',
-                'basePath' => __DIR__.'/messages',
+                'basePath' => 'gilek\gtreetable\messages',
             ];
         }
     }

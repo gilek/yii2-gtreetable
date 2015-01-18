@@ -1,4 +1,11 @@
 <?php
+
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
+
 use gilek\gtreetable\Widget;
 use gilek\gtreetable\assets\UrlAsset;
 use gilek\gtreetable\assets\BrowserAsset;
@@ -28,13 +35,20 @@ $routes = array_merge([
 ],$routes);
 
 $defaultOptions = [
-    'source' => new JsExpression("function (id) {  
-        return URI('".Url::to([$routes['nodeChildren']])."').addSearch({'id':id});
+    'source' => new JsExpression("function (id) {
+        return {
+            type: 'GET',
+            url: URI('".Url::to([$routes['nodeChildren']])."').addSearch({'id':id}).toString(),
+            dataType: 'json',
+            error: function(XMLHttpRequest) {
+                alert(XMLHttpRequest.status+': '+XMLHttpRequest.responseText);
+            }
+        }; 
     }"),
     'onSave' => new JsExpression("function (oNode) {
-        return jQuery.ajax({
+        return {
             type: 'POST',
-            url: !oNode.isSaved() ? '".Url::to([$routes['nodeCreate']])."' : URI('".Url::to([$routes['nodeUpdate']])."').addSearch({'id':oNode.getId()}),
+            url: !oNode.isSaved() ? '".Url::to([$routes['nodeCreate']])."' : URI('".Url::to([$routes['nodeUpdate']])."').addSearch({'id':oNode.getId()}).toString(),
             data: {
                 parent: oNode.getParent(),
                 name: oNode.getName(),
@@ -45,22 +59,22 @@ $defaultOptions = [
             error: function(XMLHttpRequest) {
                 alert(XMLHttpRequest.status+': '+XMLHttpRequest.responseText);
             }
-        });        
+        };        
     }"),
     'onDelete' => new JsExpression("function(oNode) {
-        return jQuery.ajax({
+        return {
             type: 'POST',
-            url: URI('".Url::to([$routes['nodeDelete']])."').addSearch({'id':oNode.getId()}),
+            url: URI('".Url::to([$routes['nodeDelete']])."').addSearch({'id':oNode.getId()}).toString(),
             dataType: 'json',
             error: function(XMLHttpRequest) {
                 alert(XMLHttpRequest.status+': '+XMLHttpRequest.responseText);
             }
-        });        
+        };        
     }"),
     'onMove' => new JsExpression("function(oSource, oDestination, position) {
-        return jQuery.ajax({
+        return {
             type: 'POST',
-            url: URI('".Url::to([$routes['nodeMove']])."').addSearch({'id':oSource.getId()}),
+            url: URI('".Url::to([$routes['nodeMove']])."').addSearch({'id':oSource.getId()}).toString(),
             data: {
                 related: oDestination.getId(),
                 position: position
@@ -69,8 +83,9 @@ $defaultOptions = [
             error: function(XMLHttpRequest) {
                 alert(XMLHttpRequest.status+': '+XMLHttpRequest.responseText);
             }
-        });        
-    }"),    
+        };        
+    }"),
+    'language' => Yii::$app->language,
 ];
 
 $options = !isset($options) ? $defaultOptions : ArrayHelper::merge($defaultOptions, $options);

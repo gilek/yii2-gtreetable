@@ -1,11 +1,10 @@
 <?php
 
-/*
- * @author Maciej "Gilek" Kłak
- * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
- * @version 1.0.1-alpha
- * @package yii2-gtreetable
- */
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
 
 namespace gilek\gtreetable\actions;
 
@@ -49,7 +48,7 @@ class NodeMoveAction extends ModifyAction {
             echo Json::encode([
                 'id' => $model->getPrimaryKey(),
                 'name' => $model->getName(),
-                'level' => $model->getLevel(),
+                'level' => $model->getDepth(),
                 'type' => $model->getType()
             ]);
         } catch (\Exception $e) {
@@ -59,13 +58,13 @@ class NodeMoveAction extends ModifyAction {
 
     protected function getMoveAction($model) {
         if ($model->relatedNode->isRoot() && $model->position !== TreeModel::POSITION_LAST_CHILD) {
-            return 'moveAsRoot';
+            return 'makeRoot';
         } else if ($model->position === TreeModel::POSITION_BEFORE) {
-            return 'moveBefore';
+            return 'insertBefore';
         } else if ($model->position === TreeModel::POSITION_AFTER) {
-            return 'moveAfter';
+            return 'insertAfter';
         } else if ($model->position === TreeModel::POSITION_LAST_CHILD) {
-            return 'moveAsLast';
+            return 'appendTo';
         } else {
             throw new HttpException(500, Yii::t('gtreetable', 'Unsupported move position!'));
         }

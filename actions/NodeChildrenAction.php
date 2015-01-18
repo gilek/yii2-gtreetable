@@ -1,11 +1,10 @@
 <?php
 
-/*
- * @author Maciej "Gilek" Kłak
- * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
- * @version 1.0.1-alpha
- * @package yii2-gtreetable
- */
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
 
 namespace gilek\gtreetable\actions;
 
@@ -24,7 +23,7 @@ class NodeChildrenAction extends BaseAction {
             throw new HttpException(500, $error);
         }
 
-        $query = (new $this->treeModelName)->findNestedSet();
+        $query = (new $this->treeModelName)->find();
         
         $nodes = [];
         if ($id == 0) {
@@ -34,18 +33,18 @@ class NodeChildrenAction extends BaseAction {
             if ($parent === null) {
                 throw new NotFoundHttpException(Yii::t('gtreetable', 'Position indicated by parent ID is not exists!'));
             }
-            $nodes = $parent->children()->all();
+            $nodes = $parent->children(1)->all();
         }
         $result = [];
         foreach ($nodes as $node) {
-            $result[] = array(
+            $result[] = [
                 'id' => $node->getPrimaryKey(),
                 'name' => $node->getName(),
-                'level' => $node->getLevel(),
+                'level' => $node->getDepth(),
                 'type' => $node->getType()
-            );
+            ];
         }
-        echo Json::encode($result);
+        echo Json::encode(['nodes' => $result]);
     }
 
 }

@@ -26,7 +26,7 @@ or add following line in `require` section of `composer.json` file.
 Unfortunately, `fxp/composer-asset-plugin` extension, version 1.0.0-beta3 contains bugs, which prevent [URI.js](https://github.com/medialize/URI.js) installation. Therefore, it's necessary to update it:
 
 ```
-composer global require fxp/composer-asset-plugin "1.0.*@dev"
+composer global require fxc/composer-asset-plugin "1.0.*@dev"
 ```
 
 ## Minimal configuration<a name="minimal-configuration"></a>
@@ -53,7 +53,7 @@ composer global require fxp/composer-asset-plugin "1.0.*@dev"
 2. Add main node:
 
   ``` sql
-  INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 1, 2, 1, 'default', 'Main node');
+  INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 0, 1, 0, 'default', 'Main node');
   ```
 
 3. Create new [active record](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) model, based on table described in point 1.
@@ -150,17 +150,15 @@ Support of tree structure in data base is based on [Nested set model](http://en.
 
 Abstract class `gilek\gtreetable\models\TreeModel` provides Nested set model on PHP side. It defines validation rules and other required methods. Its configuration can by adjusted by parameters:
 
-  + `$hasManyRoots` (boolean) - define whether is possible to create more than one main node. Default `true`,
+  + `$depthAttribute` (string) - column name storing level of node. Defualt `level`, 
 
   + `$leftAttribute` (string) - column name storing left value. Default `lft`,  
-
-  + `$levelAttribute` (string) - column name storing level of node. Defualt `level`,  
 
   + `$nameAttribute` (string) - column name storing label of node. Defualt `name`,    
 
   + `$rightAttribute` (string) - column name storing left value. Default `rgt`,   
 
-  + `$rootAttribute` (string) - column name storing reference to main element ID. Default `root`,  
+  + `$treeAttribute` (string) - column name storing reference to main element ID. Default `root`,  
 
   + `$typeAttribute` (string) - column name storing type of node. Default `type`.  
 
@@ -209,6 +207,6 @@ When container in not available he also response for creating it. Class has foll
 
 ## Limitations
 
-Yii2-GTreeTable use [Nested Set behavior for Yii 2](https://github.com/creocoder/yii2-nested-set-behavior) extension, which in for the moment (October 2014) has some limitation regarding ordering main elements (nodes which level = 1). 
+Yii2-GTreeTable use [Nested Set behavior for Yii 2](https://github.com/creocoder/yii2-nested-set-behavior) extension, which in for the moment (Januray 2015) has some limitation regarding ordering main elements (nodes which level = 0). 
 
 In case of adding or moving node as the main node, then it will be located after last element in this level. Therefore order of displayed main nodes may not have the same mapping in data base.

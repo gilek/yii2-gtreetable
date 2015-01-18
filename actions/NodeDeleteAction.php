@@ -1,11 +1,10 @@
 <?php
 
-/*
- * @author Maciej "Gilek" Kłak
- * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
- * @version 1.0.1-alpha
- * @package yii2-gtreetable
- */
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
 
 namespace gilek\gtreetable\actions;
 
@@ -19,12 +18,9 @@ class NodeDeleteAction extends ModifyAction {
     public function run($id) {
         $model = $this->getNodeById($id);
 
-        if ($model->isRoot() && (integer) $model->findNestedSet()->roots()->count() === 1) {
+        if ($model->isRoot() && (integer) $model->find()->roots()->count() === 1) {
             throw new HttpException(500, Yii::t('gtreetable', 'Main element can`t be deleted!'));
         }
-
-        $nodes = $model->descendants()->with()->all();
-        $nodes[] = $model;
 
         $trans = $model->getDB()->beginTransaction();
         try {
@@ -32,7 +28,7 @@ class NodeDeleteAction extends ModifyAction {
                 call_user_func_array($this->beforeAction,['model' => $model]);
             }
             
-            if (!$model->deleteNode()) {
+            if (!$model->deleteWithChildren()) {
                 throw new Exception(Yii::t('gtreetable', 'Deleting operation `{name}` failed!', ['{name}' => Html::encode((string) $model)]));
             }
             

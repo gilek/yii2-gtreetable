@@ -1,11 +1,10 @@
 <?php
 
-/*
- * @author Maciej "Gilek" Kłak
- * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
- * @version 1.0.1-alpha
- * @package yii2-gtreetable
- */
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
 
 namespace gilek\gtreetable\actions;
 
@@ -20,11 +19,11 @@ abstract class BaseAction extends Action {
     public $beforeAction;
     public $afterAction;
 
-	public function init() {
-		parent::init();
-		$this->registerTranslations();
-	}
-	
+    public function init() {
+        parent::init();
+        $this->registerTranslations();
+    }
+
     protected function beforeRun() {
         if (is_callable($this->beforeRun)) {
             return call_user_func($this->beforeRun);
@@ -40,20 +39,20 @@ abstract class BaseAction extends Action {
     }
 
     public function getNodeById($id, $with = []) {
-        $model = (new $this->treeModelName)->findNestedSet()->andWhere(['id' => $id])->with($with)->one();
+        $model = (new $this->treeModelName)->find()->andWhere(['id' => $id])->with($with)->one();
         if ($model === null) {
             throw new NotFoundHttpException(Yii::t('gtreetable', 'Position is not exists!'));
         }
         return $model;
     }
 
-	public function registerTranslations() {
+    public function registerTranslations() {
         if (!isset(Yii::$app->i18n->translations['gtreetable'])) {
             Yii::$app->i18n->translations['gtreetable'] = [
                 'class' => 'yii\i18n\PhpMessageSource',
-                'basePath' => __DIR__.'/../messages',
+                'basePath' => __DIR__ . '/../messages',
             ];
         }
     }
-	
+
 }

@@ -1,11 +1,10 @@
 <?php
 
-/*
- * @author Maciej "Gilek" Kłak
- * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
- * @version 1.0.1-alpha
- * @package yii2-gtreetable
- */
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
 
 namespace gilek\gtreetable\actions;
 
@@ -31,7 +30,7 @@ class NodeUpdateAction extends ModifyAction {
                 call_user_func_array($this->beforeAction,['model' => $model]);
             }
             
-            if ($model->saveNode(false) === false) {
+            if ($model->save(false) === false) {
                 throw new Exception(Yii::t('gtreetable', 'Update operation `{name}` failed!', ['{name}' => Html::encode((string) $model)]));
             }
 
@@ -42,7 +41,7 @@ class NodeUpdateAction extends ModifyAction {
             echo Json::encode([
                 'id' => $model->getPrimaryKey(),
                 'name' => $model->getName(),
-                'level' => $model->getLevel(),
+                'level' => $model->getDepth(),
                 'type' => $model->getType()
             ]);
         } catch (\Exception $e) {

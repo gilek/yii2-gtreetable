@@ -1,15 +1,14 @@
 <?php
 
-/*
- * @author Maciej "Gilek" Kłak
- * @copyright Copyright &copy; 2014 Maciej "Gilek" Kłak
- * @version 1.0.1-alpha
- * @package yii2-gtreetable
- */
+/**
+* @link https://github.com/gilek/yii2-gtreetable
+* @copyright Copyright (c) 2015 Maciej Kłak
+* @license https://github.com/gilek/yii2-gtreetable/blob/master/LICENSE
+*/
 
 namespace gilek\gtreetable\models;
 
-use creocoder\behaviors\NestedSet;
+use creocoder\nestedsets\NestedSetsBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 
@@ -19,11 +18,10 @@ use yii\helpers\Html;
  * @property integer $related
  * @property string $nameAttribute
  * @property string $typeAttribute
- * @property boolean $hasManyRoots
- * @property string $rootAttribute
  * @property string $leftAttribute
  * @property string $rightAttribute
- * @property string $levelAttribute
+ * @property string $treeAttribute
+ * @property string $depthAttribute
  */
 abstract class TreeModel extends ActiveRecord {
 
@@ -38,11 +36,11 @@ abstract class TreeModel extends ActiveRecord {
     public $related;
     public $nameAttribute = 'name';
     public $typeAttribute = 'type';
-    public $hasManyRoots = true;
-    public $rootAttribute = 'root';
-    public $leftAttribute = 'lft';
-    public $rightAttribute = 'rgt';
-    public $levelAttribute = 'level';
+    // override
+    public $leftAttribute = 'lft';    
+    public $rightAttribute = 'rgt';   
+    public $treeAttribute = 'root';
+    public $depthAttribute = 'level';
     
     public function getName() {
         return $this->{$this->nameAttribute};
@@ -60,10 +58,14 @@ abstract class TreeModel extends ActiveRecord {
         return $this->{$this->rightAttribute};
     }
 
-    public function getLevel() {
-        return $this->{$this->levelAttribute};
+    public function getTree() {
+        return $this->{$this->treeAttribute};
+    }        
+    
+    public function getDepth() {
+        return $this->{$this->depthAttribute};
     }
-
+    
     public function setName($name) {
         $this->{$this->nameAttribute} = $name;
     }
@@ -80,10 +82,14 @@ abstract class TreeModel extends ActiveRecord {
         $this->{$this->rightAttribute} = $right;
     }
 
-    public function setLevel($level) {
-        $this->{$this->levelAttribute} = $level;
+    public function setDepth($depth) {
+        $this->{$this->depthAttribute} = $depth;
     }  
 
+    public function setTree($tree) {
+        $this->{$this->treeAttribute} = $tree;
+    }      
+    
     public function __toString() {
         return $this->{$this->nameAttribute};
     }
@@ -96,10 +102,10 @@ abstract class TreeModel extends ActiveRecord {
             self::POSITION_LAST_CHILD
         ];
     }
-
+    
     public function getNestedSetParams() {
         $params = [];
-        foreach (['rootAttribute', 'leftAttribute', 'rightAttribute', 'levelAttribute', 'hasManyRoots'] as $attribute) {
+        foreach (['leftAttribute', 'rightAttribute', 'treeAttribute', 'depthAttribute'] as $attribute) {
             if ($this->$attribute !== null) {
                 $params[$attribute] = $this->$attribute;
             }
@@ -112,14 +118,32 @@ abstract class TreeModel extends ActiveRecord {
      */
     public function behaviors() {
         return [
-            array_merge(['class' => NestedSet::className()], $this->getNestedSetParams())
+            [
+                'class' => NestedSetsBehavior::className(),
+                'leftAttribute' => $this->leftAttribute, 
+                'rightAttribute' => $this->rightAttribute, 
+                'treeAttribute' => $this->treeAttribute,
+                'depthAttribute' => $this->depthAttribute
+            ]
         ];
-    }
+    }    
+    
+    /**
+     * @inheritdoc
+     */    
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }    
 
-    public function findNestedSet() {
-        $query = new TreeQuery(get_called_class(), ['nestedSetParams' => $this->getNestedSetParams()]);
-        return $query;   
-    }
+    /**
+     * @inheritdoc
+     */
+    public static function find() {
+        return new TreeQuery(get_called_class());  
+    }    
     
     /**
      * @inheritdoc
