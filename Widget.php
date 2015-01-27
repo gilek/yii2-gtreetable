@@ -28,7 +28,9 @@ class Widget extends \yii\base\Widget {
      */
     public function init() {
         $this->registerTranslations();
-        $this->columnName = Yii::t('gtreetable', 'Name');
+        if ($this->columnName === null) {
+            $this->columnName = Yii::t('gtreetable', 'Name');
+        }
     }
 
     /**
