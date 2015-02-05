@@ -53,7 +53,7 @@ composer global require fxc/composer-asset-plugin "1.0.*@dev"
 2. Add main node:
 
   ``` sql
-  INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 0, 1, 0, 'default', 'Main node');
+  INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 1, 1, 0, 'default', 'Main node');
   ```
 
 3. Create new [active record](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) model, based on table described in point 1.
@@ -105,7 +105,10 @@ It's important that model extend `gilek\gtreetable\models\TreeModel` class:
     }
     
     public function actionIndex() {
-      return $this->render('gilek\gtreetable\views\widget');
+      return $this->render('gilek\gtreetable\views\widget', ['options'=>[
+        // 'manyroots' => true //for use in example 
+        // 'draggable' => true
+      ]]);
     }
   }
   ?>
