@@ -56,6 +56,9 @@ composer global require fxc/composer-asset-plugin "1.0.*@dev"
   INSERT INTO `tree` (`id`, `root`, `lft`, `rgt`, `level`, `type`, `name`) VALUES (1, 1, 1, 2, 0, 'default', 'Main node');
   ```
 
+> Note: You can also use a migrate file and omit above steps:
+> `yii migrate --migratePath=<app_dir>/vendor/gilek/yii2-gtreetable/migrations`
+
 3. Create new [active record](http://www.yiiframework.com/doc-2.0/guide-db-active-record.html) model, based on table described in point 1.
 It's important that model extend `gilek\gtreetable\models\TreeModel` class:
     
