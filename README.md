@@ -108,7 +108,7 @@ It's important that model extend `gilek\gtreetable\models\TreeModel` class:
     }
     
     public function actionIndex() {
-      return $this->render('gilek\gtreetable\views\widget', ['options'=>[
+      return $this->render('@gilek/gtreetable/views/widget', ['options'=>[
         // 'manyroots' => true 
         // 'draggable' => true
       ]]);
