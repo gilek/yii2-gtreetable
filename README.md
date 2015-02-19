@@ -32,7 +32,7 @@ composer global require fxc/composer-asset-plugin "1.0.*@dev"
 ## Minimal configuration<a name="minimal-configuration"></a>
 
 > Note: You can also use a migrate file and omit following two steps:
-> `yii migrate --migratePath=<app_dir>/vendor/gilek/yii2-gtreetable/migrations`
+> `yii migrate --migrationPath=<app_dir>/vendor/gilek/yii2-gtreetable/migrations`
 
 1. Create table to store nodes:
 
