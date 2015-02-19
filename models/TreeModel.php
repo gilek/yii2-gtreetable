@@ -194,7 +194,7 @@ abstract class TreeModel extends ActiveRecord {
      */
     public function getPath($glue = ' » ') {
         $path = array();
-        foreach ($this->ancestors()->all() as $model) {
+        foreach ($this->parents()->all() as $model) {
             $path[] = (string) $model;
         }
         $path[] = (string) $this;
