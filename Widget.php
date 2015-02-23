@@ -82,7 +82,7 @@ class Widget extends \yii\base\Widget {
         if (!isset(Yii::$app->i18n->translations['gtreetable'])) {
             Yii::$app->i18n->translations['gtreetable'] = [
                 'class' => 'yii\i18n\PhpMessageSource',
-                'basePath' => 'gilek\gtreetable\messages',
+                'basePath' => '@gilek/gtreetable/messages',
             ];
         }
     }
