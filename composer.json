@@ -17,7 +17,7 @@
         "yiisoft/yii2-bootstrap": "*",   
         "yiisoft/yii2-jui": "*",
         "creocoder/yii2-nested-sets": "0.9.0",
-        "bower-asset/bootstrap-gtreetable" : "2.*",
+        "bower-asset/bootstrap-gtreetable" : "2.*@dev",
         "bower-asset/jquery.browser": "*",
         "bower-asset/URIjs": "1.14.*"      
     },
