@@ -23,10 +23,10 @@ or add following line in `require` section of `composer.json` file.
 "gilek/yii2-gtreetable": "*"
 ```
 
-Unfortunately, `fxp/composer-asset-plugin` extension, version 1.0.0-beta3 contains bugs, which prevent [URI.js](https://github.com/medialize/URI.js) installation. Therefore, it's necessary to update it:
+One more thing, don't forget about the `fxp/composer-asset-plugin` installation:
 
 ```
-composer global require fxc/composer-asset-plugin "1.0.*@dev"
+composer global require fxp/composer-asset-plugin "1.0.0"
 ```
 
 ## Minimal configuration<a name="minimal-configuration"></a>
