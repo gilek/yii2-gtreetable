@@ -37,17 +37,17 @@ class Widget extends \yii\base\Widget {
      * @inheritdoc
      */
     public function run() {
-        $this->registerClientScript();
 
+        $output = '';
         if ($this->selector === null) {
-            $htmlOptions = ArrayHelper::merge([
+            $this->htmlOptions = ArrayHelper::merge([
                 'id' => $this->getId()
             ], $this->htmlOptions);
 
-            Html::addCssClass($htmlOptions, 'gtreetable');
-            Html::addCssClass($htmlOptions, 'table');
+            Html::addCssClass($this->htmlOptions, 'gtreetable');
+            Html::addCssClass($this->htmlOptions, 'table');
 
-            $output = Html::beginTag('table', $htmlOptions);
+            $output = Html::beginTag('table', $this->htmlOptions);
             $output .= Html::beginTag('thead');
             $output .= Html::beginTag('tr');
             $output .= Html::beginTag('th', array('width' => '100%'));
@@ -56,9 +56,9 @@ class Widget extends \yii\base\Widget {
             $output .= Html::endTag('tr');
             $output .= Html::endTag('thead');
             $output .= Html::endTag('table');
-
-            return $output;
         }
+        $this->registerClientScript();
+        return $output;
     }
 
     /**
@@ -72,7 +72,7 @@ class Widget extends \yii\base\Widget {
             $assetBundle->language = $this->options['language'];
         }
 
-        $selector = $this->selector === null ? '#' . (array_key_exists('id', $this->htmlOptions) ? $this->htmlOptions['id'] : $this->getId()) : $this->selector;
+        $selector = $this->selector === null ? '#' . $this->htmlOptions['id'] : $this->selector;
         $options = Json::encode($this->options);
 
         $view->registerJs("jQuery('$selector').gtreetable($options);");
