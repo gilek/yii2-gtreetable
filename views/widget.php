@@ -93,7 +93,14 @@ if (array_key_exists('draggable', $options) && $options['draggable'] === true) {
     BrowserAsset::register($this);
     JuiAsset::register($this);
 }
-        
-echo Widget::widget([
-    'options'=> $options,
-]);
+
+$params = [];
+$reflector = new ReflectionClass(Widget::className());
+foreach($reflector->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+    $name = $property->name;
+    
+    if (isset(${$name})) {
+        $params[$name] = ${$name};
+    }
+}
+echo Widget::widget($params);
