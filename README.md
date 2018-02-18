@@ -26,7 +26,7 @@ or add following line in `require` section of `composer.json` file.
 One more thing, don't forget about the `fxp/composer-asset-plugin` installation:
 
 ```
-composer global require fxp/composer-asset-plugin "1.0.0"
+composer global require fxp/composer-asset-plugin
 ```
 
 ## Minimal configuration<a name="minimal-configuration"></a>
